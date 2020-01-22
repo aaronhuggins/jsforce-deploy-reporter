@@ -1,0 +1,239 @@
+{
+  "details": {
+    "componentSuccesses": [
+      {
+        "changed": "false",
+        "componentType": "ApexClass",
+        "created": "false",
+        "createdDate": "2020-01-21T16:54:21.000Z",
+        "deleted": "false",
+        "fileName": "default/classes/AddressWrapper.cls",
+        "fullName": "AddressWrapper",
+        "id": "01p1N00000E9xEEQAZ",
+        "success": "true"
+      }
+    ],
+    "runTestResult": {
+      "codeCoverage": [
+        {
+          "id": "01p1N00000E9xEEQAZ",
+          "locationsNotCovered": [
+            {
+              "column": "0",
+              "line": "9",
+              "numExecutions": "0",
+              "time": "-1.0"
+            },
+            {
+              "column": "0",
+              "line": "10",
+              "numExecutions": "0",
+              "time": "-1.0"
+            },
+            {
+              "column": "0",
+              "line": "11",
+              "numExecutions": "0",
+              "time": "-1.0"
+            },
+            {
+              "column": "0",
+              "line": "12",
+              "numExecutions": "0",
+              "time": "-1.0"
+            },
+            {
+              "column": "0",
+              "line": "13",
+              "numExecutions": "0",
+              "time": "-1.0"
+            },
+            {
+              "column": "0",
+              "line": "14",
+              "numExecutions": "0",
+              "time": "-1.0"
+            },
+            {
+              "column": "0",
+              "line": "15",
+              "numExecutions": "0",
+              "time": "-1.0"
+            },
+            {
+              "column": "0",
+              "line": "27",
+              "numExecutions": "0",
+              "time": "-1.0"
+            },
+            {
+              "column": "0",
+              "line": "28",
+              "numExecutions": "0",
+              "time": "-1.0"
+            },
+            {
+              "column": "0",
+              "line": "29",
+              "numExecutions": "0",
+              "time": "-1.0"
+            },
+            {
+              "column": "0",
+              "line": "30",
+              "numExecutions": "0",
+              "time": "-1.0"
+            },
+            {
+              "column": "0",
+              "line": "31",
+              "numExecutions": "0",
+              "time": "-1.0"
+            },
+            {
+              "column": "0",
+              "line": "32",
+              "numExecutions": "0",
+              "time": "-1.0"
+            }
+          ],
+          "name": "AddressWrapper",
+          "namespace": {
+            "$": {
+              "xsi:nil": "true"
+            }
+          },
+          "numLocations": "27",
+          "numLocationsNotCovered": "13",
+          "type": "Class"
+        }
+      ],
+      "numFailures": "0",
+      "numTestsRun": "11",
+      "successes": [
+        {
+          "id": "01p3l00000EUwsoAAD",
+          "methodName": "testConstructor",
+          "name": "AccountsSelectorTest",
+          "namespace": {
+            "$": {
+              "xsi:nil": "true"
+            }
+          },
+          "time": "57.0"
+        },
+        {
+          "id": "01p3l00000EUwsoAAD",
+          "methodName": "testGetRecordTypeIdByName_Success",
+          "name": "AccountsSelectorTest",
+          "namespace": {
+            "$": {
+              "xsi:nil": "true"
+            }
+          },
+          "time": "60.0"
+        },
+        {
+          "id": "01p3l00000EUwsoAAD",
+          "methodName": "testGetRecordTypeIdByName_whenBadValue",
+          "name": "AccountsSelectorTest",
+          "namespace": {
+            "$": {
+              "xsi:nil": "true"
+            }
+          },
+          "time": "57.0"
+        },
+        {
+          "id": "01p3l00000EUwsoAAD",
+          "methodName": "testGetRecordTypeIdByName_whenEmpty",
+          "name": "AccountsSelectorTest",
+          "namespace": {
+            "$": {
+              "xsi:nil": "true"
+            }
+          },
+          "time": "57.0"
+        },
+        {
+          "id": "01p3l00000EUwsoAAD",
+          "methodName": "testNewInstance",
+          "name": "AccountsSelectorTest",
+          "namespace": {
+            "$": {
+              "xsi:nil": "true"
+            }
+          },
+          "time": "62.0"
+        },
+        {
+          "id": "01p3l00000EUwsoAAD",
+          "methodName": "testGetSObjectType",
+          "name": "AccountsSelectorTest",
+          "namespace": {
+            "$": {
+              "xsi:nil": "true"
+            }
+          },
+          "time": "54.0"
+        },
+        {
+          "id": "01p3l00000EUwsoAAD",
+          "methodName": "testSelectByIdWithFieldset_Success",
+          "name": "AccountsSelectorTest",
+          "namespace": {
+            "$": {
+              "xsi:nil": "true"
+            }
+          },
+          "time": "72.0"
+        },
+        {
+          "id": "01p3l00000EUwsoAAD",
+          "methodName": "testSelectByName_Success",
+          "name": "AccountsSelectorTest",
+          "namespace": {
+            "$": {
+              "xsi:nil": "true"
+            }
+          },
+          "time": "79.0"
+        },
+        {
+          "id": "01p3l00000EUwsoAAD",
+          "methodName": "testSelectByIntegrations_Success",
+          "name": "AccountsSelectorTest",
+          "namespace": {
+            "$": {
+              "xsi:nil": "true"
+            }
+          },
+          "time": "75.0"
+        },
+        {
+          "id": "01p3l00000EUwsoAAD",
+          "methodName": "testSelectByIntegrationsAndSiteIds",
+          "name": "AccountsSelectorTest",
+          "namespace": {
+            "$": {
+              "xsi:nil": "true"
+            }
+          },
+          "time": "84.0"
+        },
+        {
+          "id": "01p3l00000EUwsoAAD",
+          "methodName": "testSelectById_Success",
+          "name": "AccountsSelectorTest",
+          "namespace": {
+            "$": {
+              "xsi:nil": "true"
+            }
+          },
+          "time": "80.0"
+        }
+      ],
+      "totalTime": "737.0"
+    }
+  }
+}

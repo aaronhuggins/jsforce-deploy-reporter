@@ -1,0 +1,27 @@
+{
+  "name": "jsforce-deploy-reporter",
+  "version": "1.0.0",
+  "description": "Take a JSforce metadata deploy result and get code coverage and test result reports!",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "scripts": {
+    "format": "prettier-standard --format"
+  },
+  "author": "",
+  "files": [
+    "lib",
+    "index.d.ts",
+    "index.js"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "prettier-standard": "^16.1.0",
+    "typescript": "^3.7.5"
+  },
+  "dependencies": {
+    "istanbul-lib-coverage": "^3.0.0",
+    "istanbul-lib-report": "^3.0.0",
+    "istanbul-reports": "^3.0.0"
+  }
+}
