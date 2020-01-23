@@ -1,6 +1,6 @@
 {
   "name": "jsforce-deploy-reporter",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Take a JSforce metadata deploy result and get code coverage and test result reports!",
   "main": "index.js",
   "types": "index.d.ts",
