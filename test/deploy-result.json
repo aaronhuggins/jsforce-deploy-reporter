@@ -108,11 +108,12 @@
           "type": "Class"
         }
       ],
-      "numFailures": "0",
+      "numFailures": "1",
       "numTestsRun": "11",
-      "successes": [
+      "failures": [
         {
           "id": "01p3l00000EUwsoAAD",
+          "message": "Some kind of fake error message",
           "methodName": "testConstructor",
           "name": "AccountsSelectorTest",
           "namespace": {
@@ -120,8 +121,11 @@
               "xsi:nil": "true"
             }
           },
+          "stacktrace": "Not a real stacktrace",
           "time": "57.0"
-        },
+        }
+      ],
+      "successes": [
         {
           "id": "01p3l00000EUwsoAAD",
           "methodName": "testGetRecordTypeIdByName_Success",

@@ -3,7 +3,7 @@ const testFile = require('./deploy-result.json')
 
 const main = async function main () {
   const reporter = new JSforceReporter(testFile.details, {
-    reporter: 'lcov',
+    reporters: ['lcov', 'junit'],
     detectExecutableLines: true,
     packageRoot: './test',
     outputRoot: './coverage'
