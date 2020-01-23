@@ -48,4 +48,3 @@ The timestamps are calculated using either the time at which the reporter is ran
 
 - [IBM knowledge on Junit format](https://www.ibm.com/support/knowledgecenter/SSQ2R2_14.2.0/com.ibm.rsar.analysis.codereview.cobol.doc/topics/cac_useresults_junit.html)
 - [Junit schema](https://github.com/windyroad/JUnit-Schema)
-
