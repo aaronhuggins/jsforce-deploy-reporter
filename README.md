@@ -13,7 +13,8 @@ interface JSforceReporterOptions {
   detectExecutableLines?: boolean // If 'true', the reporter will try to read-in Apex classes/triggers from disk and guess which lines are executable.
   reporter?: string // A single report format.
   reporters?: Array<string> // Multiple report formats; see further down for information on available formats.
-  junitLevel?: 'tests' | 'components' | 'all'
+  junitLevel?: 'tests' | 'components' | 'all' // What level of results are desired for Junit output.
+  completedDate?: Date | string // The JS date or an ISO8601 string indicating the date and time that the tests completed.
   watermarks?: {
     // The low and high watermark for coverage; only lines and statements are supported.
     lines?: [number, number]
@@ -42,6 +43,8 @@ For which coverage reporters are supported and how to use watermarks, please che
 Two additional reporter types provide a facility to output a Junit-format xml file and write arrays `componentFailures`, `componentSuccesses`, `runTestResult.successes`, and `runTestResult.failures` to a JSON file. These reporter types are `junit` and `junitonly`.
 
 Type `junit` will write out both a JSON and and Junit version of the component and test results; `junitonly` will only output the Junit files. Additionally, if option `junitLevel` is provided, output can be limited to just one of tests or components; by default, it will write both reports.
+
+The timestamps are calculated using either the time at which the reporter is ran or a time passed in the options for `completedDate`. This allows the reporter to indicate in Junit files the correct duration of tests and components, which means more accurate reporting to the tools ingesting the Junit output.
 
 - [IBM knowledge on Junit format](https://www.ibm.com/support/knowledgecenter/SSQ2R2_14.2.0/com.ibm.rsar.analysis.codereview.cobol.doc/topics/cac_useresults_junit.html)
 - [Junit schema](https://github.com/windyroad/JUnit-Schema)
