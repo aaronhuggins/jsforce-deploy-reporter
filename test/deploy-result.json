@@ -121,7 +121,7 @@
               "xsi:nil": "true"
             }
           },
-          "stacktrace": "Not a real stacktrace",
+          "stackTrace": "Not a real stacktrace",
           "time": "57.0"
         }
       ],

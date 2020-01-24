@@ -11,8 +11,8 @@ interface JSforceReporterOptions {
   packageRoot: string // (Required) The root of the unpackaged Salesfroce code (usually where Package.xml lives).
   outputRoot?: string // The root of where reports should be written to disk.
   detectExecutableLines?: boolean // If 'true', the reporter will try to read-in Apex classes/triggers from disk and guess which lines are executable.
-  reporter?: string // A single report format.
-  reporters?: Array<string> // Multiple report formats; see further down for information on available formats.
+  reporter?: string // A single report format; see further down for information on available formats.
+  reporters?: Array<string> // Multiple report formats.
   junitLevel?: 'tests' | 'components' | 'all' // What level of results are desired for Junit output.
   completedDate?: Date | string // The JS date or an ISO8601 string indicating the date and time that the tests completed.
   watermarks?: {
@@ -40,11 +40,12 @@ For which coverage reporters are supported and how to use watermarks, please che
 
 ## Components and test results
 
-Two additional reporter types provide a facility to output a Junit-format xml file and write arrays `componentFailures`, `componentSuccesses`, `runTestResult.successes`, and `runTestResult.failures` to a JSON file. These reporter types are `junit` and `junitonly`.
+Three additional reporter types provide a facility to output a Junit-format xml file and write arrays `componentFailures`, `componentSuccesses`, `runTestResult.successes`, and `runTestResult.failures` to a JSON file. These reporter types are `jeststare`, `junit` and `junitonly`.
 
-Type `junit` will write out both a JSON and and Junit version of the component and test results; `junitonly` will only output the Junit files. Additionally, if option `junitLevel` is provided, output can be limited to just one of tests or components; by default, it will write both reports.
+The `jeststare` reporter will invoke the npm library `jest-stare` on a Jest-like object to create an HTML report of the test results in a directory named `jest-stare`. Type `junit` will write out both a JSON and and Junit version of the component and test results; `junitonly` will only output the Junit files. Additionally, if option `junitLevel` is provided, output can be limited to just one of tests or components; by default, it will write both reports. Junit file names are formatted as `TEST-*.xml`.
 
 The timestamps are calculated using either the time at which the reporter is ran or a time passed in the options for `completedDate`. This allows the reporter to indicate in Junit files the correct duration of tests and components, which means more accurate reporting to the tools ingesting the Junit output.
 
 - [IBM knowledge on Junit format](https://www.ibm.com/support/knowledgecenter/SSQ2R2_14.2.0/com.ibm.rsar.analysis.codereview.cobol.doc/topics/cac_useresults_junit.html)
 - [Junit schema](https://github.com/windyroad/JUnit-Schema)
+- [Jest Stare](https://www.npmjs.com/package/jest-stare)
