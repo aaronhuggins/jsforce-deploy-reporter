@@ -49,3 +49,12 @@ The timestamps are calculated using either the time at which the reporter is ran
 - [IBM knowledge on Junit format](https://www.ibm.com/support/knowledgecenter/SSQ2R2_14.2.0/com.ibm.rsar.analysis.codereview.cobol.doc/topics/cac_useresults_junit.html)
 - [Junit schema](https://github.com/windyroad/JUnit-Schema)
 - [Jest Stare](https://www.npmjs.com/package/jest-stare)
+
+## Performance
+
+Performance is approximately 325 milliseconds for 500 components and 800 tests when reporting for Junit, LCOV, and Cobertura. Writing out HTML reports taks more processor time, largely due to the number of files involved in these formats. Reporting both LCOV-html and Jest Stare takes approximately 3.12 seconds for 500 components and 800 tests.
+
+It is recomended that HTML reports are not generated when ran in a pipeline, as this may add unnecessary time and computational overhead. Only use this when needed, such as local development or when eyes are needed on human-compatible reports and the pipeline wil not generate such from another format.
+
+## Contributors
+Aaron Huggins
