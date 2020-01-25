@@ -8,7 +8,7 @@ const main = async function main () {
     packageRoot: './test',
     outputRoot: './coverage'
   })
-  
+
   await reporter.report()
 }
 

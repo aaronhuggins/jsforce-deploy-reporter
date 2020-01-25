@@ -1,24 +1,27 @@
 const prettier = require('prettier-standard')
 const gulp = require('gulp')
-const { JSforceReporter } = require('jsforce-deploy-reporter')
+const { JSforceReporter } = require('./index')
 const { deploy } = require('@nhs-llc/gulp-jsforce-deploy')
 
 gulp.task('test', async () => {
   return new Promise((resolve, reject) => {
-    gulp.src('./test/**', { base: './' })
-    .pipe(zip('pkg.zip'))
-    .pipe(deploy({
-      username: process.env['sf.username'],
-      password: process.env['sf.password'],
-      loginUrl: process.env['sf.serverurl'],
-      checkOnly: true,
-      checkOnlyNoFail: true,
-      verbose: true,
-      resultOnly: true
-    }))
-    .pipe(gulp.dest('./'))
-    .on('finish', resolve)
-    .on('error', reject)
+    gulp
+      .src('./test/**', { base: './' })
+      .pipe(zip('pkg.zip'))
+      .pipe(
+        deploy({
+          username: process.env['sf.username'],
+          password: process.env['sf.password'],
+          loginUrl: process.env['sf.serverurl'],
+          checkOnly: true,
+          checkOnlyNoFail: true,
+          verbose: true,
+          resultOnly: true
+        })
+      )
+      .pipe(gulp.dest('./'))
+      .on('finish', resolve)
+      .on('error', reject)
   })
 })
 

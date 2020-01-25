@@ -17,20 +17,23 @@ const { deploy } = require('@nhs-llc/gulp-jsforce-deploy')
 
 gulp.task('test', async () => {
   return new Promise((resolve, reject) => {
-    gulp.src('./force-app/main/default/**', { base: './force-app/main' })
-    .pipe(zip('pkg.zip'))
-    .pipe(deploy({
-      username: process.env['sf.username'],
-      password: process.env['sf.password'],
-      loginUrl: process.env['sf.serverurl'],
-      checkOnly: true,
-      checkOnlyNoFail: true,
-      verbose: true,
-      resultOnly: true
-    }))
-    .pipe(gulp.dest('./'))
-    .on('finish', resolve)
-    .on('error', reject)
+    gulp
+      .src('./force-app/main/default/**', { base: './force-app/main' })
+      .pipe(zip('pkg.zip'))
+      .pipe(
+        deploy({
+          username: process.env['sf.username'],
+          password: process.env['sf.password'],
+          loginUrl: process.env['sf.serverurl'],
+          checkOnly: true,
+          checkOnlyNoFail: true,
+          verbose: true,
+          resultOnly: true
+        })
+      )
+      .pipe(gulp.dest('./'))
+      .on('finish', resolve)
+      .on('error', reject)
   })
 })
 
@@ -101,4 +104,5 @@ Performance is approximately 325 milliseconds for 500 components and 800 tests w
 It is recomended that HTML reports are not generated when ran in a pipeline, as this may add unnecessary time and computational overhead. Only use this when needed, such as local development or when eyes are needed on human-compatible reports and the pipeline wil not generate such from another format.
 
 ## Contributors
+
 Aaron Huggins
