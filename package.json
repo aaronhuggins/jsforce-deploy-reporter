@@ -1,6 +1,6 @@
 {
   "name": "jsforce-deploy-reporter",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "Take a JSforce metadata deploy result and get code coverage and test result reports!",
   "main": "index.js",
   "types": "index.d.ts",
@@ -15,6 +15,15 @@
     "type": "git",
     "url": "https://github.com/ahuggins-nhs/jsforce-deploy-reporter.git"
   },
+  "keywords": [
+    "salesforce",
+    "salesforce.com",
+    "sfdc",
+    "force.com",
+    "database.com",
+    "gulpplugin",
+    "deploy"
+  ],
   "files": [
     "lib",
     "index.d.ts",
