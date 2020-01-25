@@ -12,6 +12,7 @@ There are multiple ways to get the deploy result, not the least of which would b
 
 ```javascript
 const gulp = require('gulp')
+const zip = require('gulp-zip')
 const { JSforceReporter } = require('jsforce-deploy-reporter')
 const { deploy } = require('@nhs-llc/gulp-jsforce-deploy')
 

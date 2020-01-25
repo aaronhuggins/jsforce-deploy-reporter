@@ -1,5 +1,6 @@
 const prettier = require('prettier-standard')
 const gulp = require('gulp')
+const zip = require('gulp-zip')
 const { JSforceReporter } = require('./index')
 const { deploy } = require('@nhs-llc/gulp-jsforce-deploy')
 
