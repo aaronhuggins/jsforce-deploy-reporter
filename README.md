@@ -4,6 +4,50 @@ A tool written entirely in NodeJS to examine the details of a Salesforce deploym
 
 Code coverage or tests for anything other than Apex should be handled by another workflow. See Salesforce doumentation for [insight on this](https://developer.salesforce.com/docs/component-library/documentation/lwc/testing).
 
+## Installation and Usage
+
+Install the package using yarn or npm: `npm install --save-dev jsforce-deploy-reporter`.
+
+There are multiple ways to get the deploy result, not the least of which would be to use `xml2js` to convert a raw response. This example uses package [`@nhs-llc/gulp-jsforce-deploy`](https://www.npmjs.com/package/@nhs-llc/gulp-jsforce-deploy).
+
+```javascript
+const gulp = require('gulp')
+const { JSforceReporter } = require('jsforce-deploy-reporter')
+const { deploy } = require('@nhs-llc/gulp-jsforce-deploy')
+
+gulp.task('test', async () => {
+  return new Promise((resolve, reject) => {
+    gulp.src('./force-app/main/default/**', { base: './force-app/main' })
+    .pipe(zip('pkg.zip'))
+    .pipe(deploy({
+      username: process.env['sf.username'],
+      password: process.env['sf.password'],
+      loginUrl: process.env['sf.serverurl'],
+      checkOnly: true,
+      checkOnlyNoFail: true,
+      verbose: true,
+      resultOnly: true
+    }))
+    .pipe(gulp.dest('./'))
+    .on('finish', resolve)
+    .on('error', reject)
+  })
+})
+
+gulp.task('coverage', async () => {
+  const { completedDate, details } = require('./deploy-result.json')
+  const reporter = new JSforceReporter(details, {
+    reporters: ['cobertura', 'junitonly' /* , 'lcov', 'jeststare' */],
+    detectExecutableLines: true,
+    packageRoot: './force-app/main/default',
+    outputRoot: './coverage',
+    completedDate
+  })
+
+  await reporter.report()
+})
+```
+
 ## Options
 
 ```typescript
@@ -52,7 +96,7 @@ The timestamps are calculated using either the time at which the reporter is ran
 
 ## Performance
 
-Performance is approximately 325 milliseconds for 500 components and 800 tests when reporting for Junit, LCOV, and Cobertura. Writing out HTML reports taks more processor time, largely due to the number of files involved in these formats. Reporting both LCOV-html and Jest Stare takes approximately 3.12 seconds for 500 components and 800 tests.
+Performance is approximately 325 milliseconds for 500 components and 800 tests when using `detectExecutableLines` and reporting for Junit, LCOV, and Cobertura. Writing out HTML reports taks more processor time, largely due to the number of files involved in these formats. Reporting both LCOV-html and Jest Stare takes approximately 3.12 seconds for 500 components and 800 tests with `detectExecutableLines`.
 
 It is recomended that HTML reports are not generated when ran in a pipeline, as this may add unnecessary time and computational overhead. Only use this when needed, such as local development or when eyes are needed on human-compatible reports and the pipeline wil not generate such from another format.
 
