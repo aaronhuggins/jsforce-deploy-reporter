@@ -4,6 +4,12 @@ A tool written entirely in NodeJS to examine the details of a Salesforce deploym
 
 Code coverage or tests for anything other than Apex should be handled by another workflow. See Salesforce doumentation for [insight on this](https://developer.salesforce.com/docs/component-library/documentation/lwc/testing).
 
+## Features
+- Vanilla direct-to-disk reporter class
+- Gulp streaming reporter function
+- Supports all built-in code coverage reports available in IstanbulJS
+- Exports JSON, Junit, and Jest Stare reports for test suites
+
 ## Installation and Usage
 
 Install the package using yarn or npm: `npm install --save-dev jsforce-deploy-reporter`.
