@@ -74,7 +74,10 @@ declare module 'jsforce-deploy-reporter' {
     report (): Promise<void>
   }
 
+  function jsforceGulpReporter (options: JSforceReporterOptions): internal.Transform
+
   module.exports = {
-    JSforceReporter
+    JSforceReporter,
+    jsforceGulpReporter
   }
 }
