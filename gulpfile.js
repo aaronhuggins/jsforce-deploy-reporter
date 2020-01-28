@@ -7,5 +7,5 @@ gulp.task('test', async () => {
 })
 
 gulp.task('format', async () => {
-  await prettier.run('./', {})
+  await prettier.run('./', { lint: true })
 })

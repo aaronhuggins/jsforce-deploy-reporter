@@ -33,7 +33,7 @@ const gulper = async function gulper (...reports) {
 }
 
 describe('Deploy Reporter', () => {
-  describe('class JSforceReporter', ()=> {
+  describe('class JSforceReporter', () => {
     afterAll(() => {
       fs.removeSync(TMP_DIR)
     })
@@ -86,7 +86,7 @@ describe('Deploy Reporter', () => {
     })
   })
 
-  describe('function jsforceGulpReporter', ()=> {
+  describe('function jsforceGulpReporter', () => {
     afterAll(() => {
       fs.removeSync(TMP_DIR)
     })
@@ -123,7 +123,7 @@ describe('Deploy Reporter', () => {
             })
           )
           .pipe(gulp.dest(TMP_DIR))
-          .on('data', (data) => {
+          .on('data', data => {
             vinylFile = data
           })
           .on('finish', resolve)
