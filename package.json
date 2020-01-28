@@ -32,8 +32,12 @@
   "license": "MIT",
   "devDependencies": {
     "@nhs-llc/gulp-jsforce-deploy": "^2.2.0",
+    "fs-extra": "^8.1.0",
     "gulp": "^4.0.2",
+    "gulp-shell": "^0.7.1",
     "gulp-zip": "^5.0.1",
+    "jest": "^25.1.0",
+    "jest-cli": "^25.1.0",
     "prettier-standard": "^16.1.0",
     "typescript": "^3.7.5"
   },
