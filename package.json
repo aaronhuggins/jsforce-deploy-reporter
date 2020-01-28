@@ -1,6 +1,6 @@
 {
   "name": "jsforce-deploy-reporter",
-  "version": "1.4.2",
+  "version": "1.5.0",
   "description": "Take a JSforce metadata deploy result and get code coverage and test result reports!",
   "main": "index.js",
   "types": "index.d.ts",
@@ -33,6 +33,7 @@
   "devDependencies": {
     "@nhs-llc/gulp-jsforce-deploy": "^2.2.0",
     "gulp": "^4.0.2",
+    "gulp-zip": "^5.0.1",
     "prettier-standard": "^16.1.0",
     "typescript": "^3.7.5"
   },
