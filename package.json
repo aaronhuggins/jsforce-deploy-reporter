@@ -1,6 +1,6 @@
 {
   "name": "jsforce-deploy-reporter",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "Take a JSforce metadata deploy result and get code coverage and test result reports!",
   "main": "index.js",
   "types": "index.d.ts",
@@ -43,6 +43,7 @@
     "istanbul-reports": "^3.0.0",
     "jest-stare": "^1.26.0",
     "uuid": "^3.4.0",
+    "vinyl": "^2.2.0",
     "xml2js": "^0.4.23"
   }
 }
