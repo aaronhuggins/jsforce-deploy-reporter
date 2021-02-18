@@ -5,10 +5,10 @@
  * @param  {string|Function} criteria - The criteria to group by.
  * @returns {object} The grouped object.
  */
-const groupBy = function groupBy (arr, criteria) {
-  return arr.reduce((obj, item) => {
+export function groupBy<T = Record<string, any>>(arr: T[], criteria: string | ((item: T) => string)): Record<string, T[]> {
+  return arr.reduce((obj: Record<string, T[]>, item: T) => {
     // Check if the criteria is a function to run on the item or a property of it
-    const key = typeof criteria === 'function' ? criteria(item) : item[criteria]
+    const key: string = typeof criteria === 'function' ? criteria(item) : item[criteria]
 
     // If the key doesn't exist yet, create it
     if (!Object.prototype.hasOwnProperty.call(obj, key)) {
@@ -20,17 +20,12 @@ const groupBy = function groupBy (arr, criteria) {
 
     // Return the object to the next item in the loop
     return obj
-  }, {})
+  }, {} as Record<string, T[]>)
 }
 
-const formatToSeconds = function (milliseconds = 1) {
+export function formatToSeconds (milliseconds: number = 1): string {
   const stringified = (milliseconds * 0.001).toFixed(3)
   const [part1, part2] = stringified.split('.')
 
   return part1 + '.' + part2.padEnd(3, '0')
-}
-
-module.exports = {
-  groupBy,
-  formatToSeconds
 }
