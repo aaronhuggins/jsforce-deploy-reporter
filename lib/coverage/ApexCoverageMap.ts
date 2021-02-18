@@ -1,12 +1,15 @@
-const { CoverageMap } = require('istanbul-lib-coverage/lib/coverage-map')
-const { getApexFileCoverage } = require('./helpers')
+import { CoverageMap } from 'istanbul-lib-coverage/lib/coverage-map'
+import { getApexFileCoverage } from './helpers'
 
-class ApexCoverageMap extends CoverageMap {
-  constructor (apexCoverage = [], options = {}) {
+export class ApexCoverageMap extends CoverageMap {
+  constructor (apexCoverage: any[] = [], options: any = {}) {
     super()
     this.apexCoverage = apexCoverage
     this.options = options
   }
+
+  apexCoverage: any[]
+  options: any
 
   async generate () {
     const promises = []
@@ -23,8 +26,4 @@ class ApexCoverageMap extends CoverageMap {
 
     return this
   }
-}
-
-module.exports = {
-  ApexCoverageMap
 }

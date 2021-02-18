@@ -1,4 +1,4 @@
-import { createFileCoverage } from 'istanbul-lib-coverage'
+import { FileCoverage } from 'istanbul-lib-coverage/lib/file-coverage'
 import { ElocDetector } from './ElocDetector'
 import * as fs from 'fs'
 import { typeExts, typeFolders } from './constants'
@@ -18,7 +18,7 @@ export async function getApexFileCoverage (coverage: any = {}, opts: any = {}) {
     executableLines = detectExecutableLines(sourceFile)
   }
   const lines = parseLines(coverage.locationsNotCovered, executableLines, locationsHit)
-  const fileCoverage = createFileCoverage(sourceFile)
+  const fileCoverage = new FileCoverage(sourceFile)
 
   lines.forEach((line, index) => {
     fileCoverage.statementMap[index] = {
