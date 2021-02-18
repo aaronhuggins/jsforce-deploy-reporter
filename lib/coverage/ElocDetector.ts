@@ -1,5 +1,9 @@
-class ElocDetector {
-  constructor (sourceContents = '') {
+import { ElocLine } from './types'
+
+/** Class for detecting Executable Lines of Code. */
+export class ElocDetector {
+  /** Construct an instance of ElocDetector. */
+  constructor (sourceContents: string = '') {
     this.rules = [
       // Class getter/setter annotation.
       /(get;)|(set;)/,
@@ -36,6 +40,33 @@ class ElocDetector {
     this.sourceContents = sourceContents
     this.lines = []
   }
+
+  rules: RegExp[]
+  skipLibrary: {
+    debugLine: RegExp
+    comment: {
+      single: RegExp
+      multi: {
+        start: RegExp
+        end: RegExp
+      }
+    }
+    query: {
+      start: RegExp
+      end: RegExp
+    }
+    class: {
+      standardVarDeclaration: RegExp
+      executableVarDeclaration: RegExp
+      methodDeclaration: RegExp
+    }
+    interface: {
+      start: RegExp
+      end: RegExp
+    }
+  }
+  sourceContents: string
+  lines: ElocLine[]
 
   detect () {
     const lines = this.sourceContents.split('\n')
@@ -102,8 +133,4 @@ class ElocDetector {
 
     return this
   }
-}
-
-module.exports = {
-  ElocDetector
 }

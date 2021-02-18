@@ -1,8 +1,11 @@
-const { FileCoverage } = require('istanbul-lib-coverage/lib/file-coverage')
-const { ElocDetector } = require('./ElocDetector')
-const fs = require('fs')
+import { createFileCoverage } from 'istanbul-lib-coverage'
+import { ElocDetector } from './ElocDetector'
+import * as fs from 'fs'
+import { typeExts, typeFolders } from './constants'
+import { CoverageType, ElocLine } from './types'
 
-const getApexFileCoverage = async function getApexFileCoverage (coverage = {}, opts = {}) {
+/** Get Apex file coverage instance. */
+export async function getApexFileCoverage (coverage: any = {}, opts: any = {}) {
   let executableLines = []
   const sourceFile =
     (typeof opts.packageRoot === 'string' ? opts.packageRoot + '/' : '') +
@@ -14,8 +17,8 @@ const getApexFileCoverage = async function getApexFileCoverage (coverage = {}, o
   if (opts.detectExecutableLines) {
     executableLines = detectExecutableLines(sourceFile)
   }
-  const lines = parseLines(coverage.locationsNotCovered, executableLines, parseFloat(locationsHit))
-  const fileCoverage = new FileCoverage(sourceFile)
+  const lines = parseLines(coverage.locationsNotCovered, executableLines, locationsHit)
+  const fileCoverage = createFileCoverage(sourceFile)
 
   lines.forEach((line, index) => {
     fileCoverage.statementMap[index] = {
@@ -28,10 +31,11 @@ const getApexFileCoverage = async function getApexFileCoverage (coverage = {}, o
   return fileCoverage
 }
 
-const parseLines = function parseLines (linesMissed = [], executableLines = [], linesHit) {
-  const result = []
-  const missed = []
-  const hit = []
+/** Parse the lines from the given Salesforce coverage metadata. */
+export function parseLines (linesMissed: any[] = [], executableLines = [], linesHit): ElocLine[] {
+  const result: ElocLine[] = []
+  const missed: number[] = []
+  const hit: number[] = []
 
   if (Array.isArray(linesMissed) && linesMissed.length > 0) {
     linesMissed.forEach(lineMissed => {
@@ -81,7 +85,8 @@ const parseLines = function parseLines (linesMissed = [], executableLines = [], 
   return result
 }
 
-const detectExecutableLines = function detectExecutableLines (sourceFile) {
+/** Detect executable lines from a given source file path. */
+export function detectExecutableLines (sourceFile: string): ElocLine[] {
   if (fs.existsSync(sourceFile)) {
     const apexString = fs.readFileSync(sourceFile, 'utf8')
     const detector = new ElocDetector(apexString).detect()
@@ -92,28 +97,12 @@ const detectExecutableLines = function detectExecutableLines (sourceFile) {
   return []
 }
 
-const getTypeFolder = function getTypeFolder (coverageType) {
-  const typeFolders = {
-    Class: 'classes',
-    Trigger: 'triggers'
-  }
-
+/** Get the folder for coverage type. */
+export function getTypeFolder (coverageType: CoverageType) {
   return typeof typeFolders[coverageType] === 'string' ? typeFolders[coverageType] : ''
 }
 
-const getTypeExt = function getTypeExt (coverageType) {
-  const typeExts = {
-    Class: '.cls',
-    Trigger: '.trigger'
-  }
-
+/** Get the file extension for coverage type. */
+export function getTypeExt (coverageType: CoverageType): string {
   return typeof typeExts[coverageType] === 'string' ? typeExts[coverageType] : ''
-}
-
-module.exports = {
-  getApexFileCoverage,
-  parseLines,
-  detectExecutableLines,
-  getTypeFolder,
-  getTypeExt
 }
