@@ -1,20 +1,55 @@
-const { formatToSeconds } = require('./helpers')
-const { CATEGORY } = require('./constants')
+import { formatToSeconds } from './helpers'
+import { CATEGORY } from './constants'
+import { ApexTestCase } from './ApexTestCase'
+import { JestSuite, JunitSuite } from './types'
 
-class ApexTestSuite {
-  constructor (testData = {}, testCases = []) {
+export class ApexTestSuite {
+  constructor (testData: any = {}, testCases: ApexTestCase[] = []) {
     Object.assign(this, testData)
 
-    this.normalize()
+    const numbers = ['errors', 'failures', 'skipped', 'time', 'tests']
+
+    if (this.errors === undefined) {
+      this.errors = this.failures
+    }
+
+    if (this.skipped === undefined) {
+      this.skipped = 0
+    }
+
+    numbers.forEach(key => {
+      if (typeof this[key] === 'string') {
+        this[key] = parseFloat(this[key])
+      }
+    })
+
+    this.timestamp = new Date().toISOString()
+    this.id = Date.now().toString() + '__' + this.id
+
+    if (!Array.isArray(this.testCases)) {
+      this.testCases = []
+    }
 
     this.testCases.push(...testCases)
   }
 
-  addTestCase (...testCases) {
+  name: string
+  errors: number
+  failures: number
+  skipped: number
+  time: number
+  tests: number
+  timestamp: string
+  id: string
+  testCases: ApexTestCase[]
+
+  /** Add one or more test cases. */
+  addTestCase (...testCases: ApexTestCase[]): void {
     this.testCases.push(...testCases)
   }
 
-  isFailed () {
+  /** Has the test suite failed? */
+  isFailed (): boolean {
     let failed = false
 
     this.testCases.forEach(testCase => {
@@ -26,7 +61,7 @@ class ApexTestSuite {
     return failed
   }
 
-  toJest () {
+  toJest (): JestSuite {
     const start = new Date(this.timestamp).getTime()
 
     return {
@@ -55,7 +90,7 @@ class ApexTestSuite {
     }
   }
 
-  toJunit () {
+  toJunit (): JunitSuite {
     return {
       testsuite: {
         $: {
@@ -72,33 +107,4 @@ class ApexTestSuite {
       }
     }
   }
-
-  normalize () {
-    const numbers = ['errors', 'failures', 'skipped', 'time', 'tests']
-
-    if (this.errors === undefined) {
-      this.errors = this.failures
-    }
-
-    if (this.skipped === undefined) {
-      this.skipped = 0
-    }
-
-    numbers.forEach(key => {
-      if (typeof this[key] === 'string') {
-        this[key] = parseFloat(this[key])
-      }
-    })
-
-    this.timestamp = new Date().toISOString()
-    this.id = Date.now().toString() + '__' + this.id
-
-    if (!Array.isArray(this.testCases)) {
-      this.testCases = []
-    }
-  }
-}
-
-module.exports = {
-  ApexTestSuite
 }

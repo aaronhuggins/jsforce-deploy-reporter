@@ -1,14 +1,19 @@
 import { formatToSeconds } from './helpers'
 import { CATEGORY } from './constants'
-import { JunitNode } from './types'
+import { JestCase, JunitCase } from './types'
 
-export interface ApexTestCaseInput extends Omit<ApexTestCase, 'time'> {
-  time: string | number
-}
-
+/** Create an Apex test case. */
 export class ApexTestCase {
-  constructor (testData: ApexTestCaseInput) {
-    Object.assign(this, this.normalize(testData))
+  constructor (testData: any = {}) {
+    Object.assign(this, testData)
+
+    if (typeof this.time === 'string') {
+      this.time = parseFloat(this.time)
+    }
+
+    this.id = Date.now().toString() + '__' + testData.id
+    this.failureMessage = this.failureMessage === undefined ? '' : this.failureMessage
+    this.failureText = this.failureText === undefined ? '' : this.failureText
   }
 
   id: string
@@ -19,8 +24,9 @@ export class ApexTestCase {
   failureText: string
   failureMessage: string
 
-  toJest () {
-    const jestcase = {
+  /** Convert to Jest case. */
+  toJest (): JestCase {
+    const jestcase: JestCase = {
       ancestorTitles: [this.classname],
       duration: this.time,
       failureMessages: [],
@@ -39,8 +45,9 @@ export class ApexTestCase {
     return jestcase
   }
 
-  toJunit () {
-    const testcase: JunitNode = {
+  /** Convert to Junit node. */
+  toJunit (): { testcase: JunitCase } {
+    const testcase: JunitCase = {
       $: {
         id: this.id,
         classname: this.classname,
@@ -59,19 +66,5 @@ export class ApexTestCase {
     return {
       testcase
     }
-  }
-
-  private normalize (input: ApexTestCaseInput): ApexTestCase {
-    const result: ApexTestCase = Object.assign({}, input) as any
-
-    if (typeof input.time === 'string') {
-      result.time = parseFloat(input.time)
-    }
-
-    result.id = Date.now().toString() + '__' + result.id
-    result.failureMessage = result.failureMessage === undefined ? '' : result.failureMessage
-    result.failureText = result.failureText === undefined ? '' : result.failureText
-
-    return result
   }
 }

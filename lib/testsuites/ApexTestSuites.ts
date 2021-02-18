@@ -1,9 +1,11 @@
-const { groupBy, formatToSeconds } = require('./helpers')
-const { CATEGORY } = require('./constants')
-const { ApexTestSuite } = require('./ApexTestSuite')
+import { groupBy, formatToSeconds } from './helpers'
+import { CATEGORY } from './constants'
+import { ApexTestSuite } from './ApexTestSuite'
+import { ApexTestCase } from './ApexTestCase'
+import { JestSuites, JunitSuites } from './types'
 
-class ApexTestSuites {
-  constructor (scanData = {}, testSuites = []) {
+export class ApexTestSuites {
+  constructor (scanData: any = {}, testSuites: ApexTestSuite[] = []) {
     Object.assign(this, scanData)
 
     this.failures = this.failures === undefined ? 0 : this.failures
@@ -11,12 +13,41 @@ class ApexTestSuites {
     this.time = this.time === undefined ? 0 : this.time
     this.name = this.name === undefined ? 'Salesforce Test Suites' : this.name
 
-    this.normalize()
+    const numbers = ['failures', 'time', 'tests']
+
+    numbers.forEach(key => {
+      if (typeof this[key] === 'string') {
+        this[key] = parseFloat(this[key])
+      }
+    })
+
+    this.id = Date.now().toString() + '__runTestResult'
+
+    if (!Array.isArray(this.testSuites)) {
+      this.testSuites = []
+    }
+
+    if (this.completed === undefined) {
+      this.completed = new Date()
+    }
+
+    if (typeof this.completed === 'string') {
+      this.completed = new Date(this.completed)
+    }
 
     this.testSuites.push(...testSuites)
   }
 
-  async generateTestSuite (className, testCases = []) {
+  name: string
+  id: string
+  failures: number
+  tests: number
+  time: number
+  completed: Date
+  testSuites: ApexTestSuite[]
+
+  /** Generate a test suite from test cases. */
+  async generateTestSuite (className: string, testCases: ApexTestCase[] = []): Promise<void> {
     const failures = testCases.reduce((sum, testCase) => sum + (testCase.category === CATEGORY.FAILURE ? 1 : 0), 0)
     const time = testCases.reduce((sum, testCase) => sum + testCase.time, 0)
 
@@ -34,24 +65,27 @@ class ApexTestSuites {
     )
   }
 
-  async generateFromTestCases (...testCases) {
-    const promises = []
+  /** Generate all test suites by category from test cases. */
+  async generateFromTestCases (...testCases: ApexTestCase[]): Promise<void> {
+    const promises: Promise<void>[] = []
     const byClassname = groupBy(testCases, 'classname')
 
     Object.keys(byClassname).forEach(key => {
       promises.push(this.generateTestSuite(key, byClassname[key]))
     })
 
-    return Promise.all(promises)
+    await Promise.all(promises)
   }
 
-  addTestSuite (...testSuites) {
+  /** Add one or more test suites. */
+  addTestSuite (...testSuites): void {
     this.testSuites.push(...testSuites)
 
     this.fixTimestampsToDuration()
   }
 
-  fixTimestampsToDuration () {
+  /** Fix time stamps according to duration. */
+  fixTimestampsToDuration (): void {
     let timestamp = new Date(this.completed.getTime() - this.time)
 
     this.testSuites.forEach(testSuite => {
@@ -60,7 +94,7 @@ class ApexTestSuites {
     })
   }
 
-  toJest () {
+  toJest (): JestSuites {
     const firstSuite = this.testSuites[0] || {
       timestamp: new Date().toISOString()
     }
@@ -102,7 +136,7 @@ class ApexTestSuites {
     }
   }
 
-  toJunit () {
+  toJunit (): JunitSuites {
     this.fixTimestampsToDuration()
 
     return {
@@ -118,32 +152,4 @@ class ApexTestSuites {
       }
     }
   }
-
-  normalize () {
-    const numbers = ['failures', 'time', 'tests']
-
-    numbers.forEach(key => {
-      if (typeof this[key] === 'string') {
-        this[key] = parseFloat(this.scanData[key])
-      }
-    })
-
-    this.id = Date.now().toString() + '__runTestResult'
-
-    if (!Array.isArray(this.testSuites)) {
-      this.testSuites = []
-    }
-
-    if (this.completed === undefined) {
-      this.completed = new Date()
-    }
-
-    if (typeof this.completed === 'string') {
-      this.completed = new Date(this.completed)
-    }
-  }
-}
-
-module.exports = {
-  ApexTestSuites
 }
