@@ -1,8 +1,8 @@
-const Vinyl = require('vinyl')
-const xml2js = require('xml2js')
-const fs = require('fs')
+import Vinyl from 'vinyl'
+import * as xml2js from 'xml2js'
+import * as fs from 'fs'
 
-const write = function write (json = false) {
+export function write (json: boolean = false): void {
   const builder = new xml2js.Builder({
     renderOpts: {
       pretty: true,
@@ -83,8 +83,4 @@ const write = function write (json = false) {
       }
     }
   }
-}
-
-module.exports = {
-  write
 }
