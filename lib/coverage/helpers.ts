@@ -1,6 +1,6 @@
 import { FileCoverage } from 'istanbul-lib-coverage/lib/file-coverage'
-import { ElocDetector } from './ElocDetector'
 import * as fs from 'fs'
+import { ElocDetector } from './ElocDetector'
 import { typeExts, typeFolders } from './constants'
 import { CoverageType, ElocLine } from './types'
 
