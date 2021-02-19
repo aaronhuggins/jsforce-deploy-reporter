@@ -13,5 +13,8 @@ module.exports = {
   collectCoverage: true,
   coverageDirectory: './coverage',
   coverageReporters: ['lcov'],
-  testRegex: '(/test/.*(spec|test|[Tt]est|[Ss]uite))\\.[tj]s(x){0,1}'
+  testRegex: '(/test/.*(spec|test|[Tt]est|[Ss]uite))\\.[tj]s(x){0,1}',
+  transform: {
+    '^.+\\.(ts|tsx)$': 'ts-jest'
+  }
 }
