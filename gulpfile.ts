@@ -1,10 +1,10 @@
-const prettier = require('prettier-standard')
-const jestCli = require('jest-cli')
+import * as shell from 'gulp-shell'
+import * as jestCli from 'jest-cli'
 
-export async function test () {
+export async function test (): Promise<void> {
   await jestCli.run()
 }
 
-export async function format () {
-  await prettier.run('./', { lint: true })
+export async function format (): Promise<void> {
+  await shell.task('ts-standard --fix')()
 }

@@ -11,7 +11,7 @@ export class ApexTestCase {
       this.time = parseFloat(this.time)
     }
 
-    this.id = Date.now().toString() + '__' + testData.id
+    this.id = `${Date.now().toString()}__${testData.id as string}`
     this.failureMessage = this.failureMessage === undefined ? '' : this.failureMessage
     this.failureText = this.failureText === undefined ? '' : this.failureText
   }

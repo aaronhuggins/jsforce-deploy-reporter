@@ -1,3 +1,7 @@
+function hasProperty (obj: any, key: string): boolean {
+  return Object.prototype.hasOwnProperty.call(obj, key)
+}
+
 /**
  * @description Group items from an array together by some criteria or value.
  * (c) 2019 Tom Bremmer (https://tbremer.com/) and Chris Ferdinandi (https://gomakethings.com), MIT License,.
@@ -11,7 +15,7 @@ export function groupBy<T = Record<string, any>> (arr: T[], criteria: string | (
     const key: string = typeof criteria === 'function' ? criteria(item) : item[criteria]
 
     // If the key doesn't exist yet, create it
-    if (!Object.prototype.hasOwnProperty.call(obj, key)) {
+    if (!hasProperty(obj, key)) {
       obj[key] = []
     }
 

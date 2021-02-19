@@ -1,4 +1,3 @@
-import Vinyl from 'vinyl'
 import { entry as processor } from 'jest-stare/lib/entry'
 import * as fs from 'fs'
 import { VinylProcessor } from '../vinyl'
@@ -8,10 +7,11 @@ import { ApexTestSuites } from './ApexTestSuites'
 import { write } from './write'
 import { ApexResult, DeployDetails } from './types'
 import type { Transform } from 'stream'
+import type { JSforceReporterOptions } from '../types'
 
 /** Reference: https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/meta_deployresult.htm */
 export class ApexTestResult {
-  constructor (deployDetails: Partial<DeployDetails> = {}, options: any = {}, transform: false | Transform = false) {
+  constructor (deployDetails: Partial<DeployDetails> = {}, options: JSforceReporterOptions = {}, transform: false | Transform = false) {
     this.deployDetails = deployDetails
     this.options = options
     this.components = {
@@ -23,12 +23,10 @@ export class ApexTestResult {
       testsuites: new ApexTestSuites({ name: 'Salesforce Test Results' })
     }
     if (this.options.completedDate !== undefined) {
-      if (typeof this.options.completedDate === 'string') {
-        this.options.completedDate = new Date(this.options.completedDate)
-      }
+      const completedDate = new Date(this.options.completedDate)
 
-      this.components.testsuites.completed = this.options.completedDate
-      this.tests.testsuites.completed = this.options.completedDate
+      this.components.testsuites.completed = completedDate
+      this.tests.testsuites.completed = completedDate
     }
 
     this.transform = transform
@@ -36,12 +34,12 @@ export class ApexTestResult {
   }
 
   deployDetails: Partial<DeployDetails>
-  options: any
+  options: JSforceReporterOptions
   components: ApexResult
   tests: ApexResult
   transform: false | Transform
 
-  async generate () {
+  async generate (): Promise<this> {
     const componentPromises = []
     const testPromises = []
 
@@ -104,7 +102,7 @@ export class ApexTestResult {
     return this
   }
 
-  jeststare () {
+  jeststare (): void {
     const mergedTestSuites = new ApexTestSuites({
       name: 'Salesforce Component and Test Results',
       tests: this.components.testsuites.tests + this.tests.testsuites.tests,
@@ -112,17 +110,17 @@ export class ApexTestResult {
       time: this.components.testsuites.time + this.tests.testsuites.time,
       testSuites: this.components.testsuites.testSuites.concat(this.tests.testsuites.testSuites)
     })
-    const coverageLink = fs.existsSync(this.options.outputRoot + '/lcov-report/index.html')
+    const coverageLink = fs.existsSync(`${this.options.outputRoot as string}/lcov-report/index.html`)
       ? '../lcov-report/index.html'
       : undefined
     const jestStareConfig = {
       log: false,
       reportTitle: mergedTestSuites.name,
-      resultDir: this.options.outputRoot + '/jest-stare/',
+      resultDir: `${this.options.outputRoot as string}/jest-stare/`,
       coverageLink
     }
 
-    if (this.transform) {
+    if (this.transform !== false) {
       const vinylProcessor = new VinylProcessor(this.transform, mergedTestSuites.toJest(), jestStareConfig)
 
       // @ts-expect-error We want to call this method because it's not truly private.
@@ -132,5 +130,5 @@ export class ApexTestResult {
     }
   }
 
-  write (json = false) {}
+  write (json = false): void {}
 }

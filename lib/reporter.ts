@@ -34,17 +34,22 @@ export class JSforceReporter {
   options: JSforceReporterOptions
   transform: false | Transform
 
-  async report () {
+  async report (): Promise<void> {
     const context = libReport.createContext({
       dir: this.options.outputRoot,
       watermarks: this.options.watermarks,
-      coverageMap: await new ApexCoverageMap(this.details.runTestResult.codeCoverage || [], this.options).generate()
+      coverageMap: await new ApexCoverageMap(
+        Array.isArray(this.details.runTestResult.codeCoverage)
+          ? this.details.runTestResult.codeCoverage
+          : [],
+        this.options
+      ).generate()
     })
     const junit = this.options.reporters.indexOf('junit')
     const junitonly = this.options.reporters.indexOf('junitonly')
     const jeststare = this.options.reporters.indexOf('jeststare')
 
-    if (this.transform) {
+    if (this.transform !== false) {
       context.data.writer = new VinylWriter('./', this.transform)
     }
 

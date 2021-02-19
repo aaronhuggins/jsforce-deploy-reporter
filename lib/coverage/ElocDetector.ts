@@ -69,7 +69,7 @@ export class ElocDetector {
   sourceContents: string
   lines: ElocLine[]
 
-  detect () {
+  detect (): this {
     const lines = this.sourceContents.split('\n')
     let multiLineComment = false
     let soqlQuery = false

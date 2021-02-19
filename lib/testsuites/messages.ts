@@ -60,7 +60,7 @@ export class ApexComponentMessage {
       name: this.fullName + ': file ' + this.fileName,
       time: DEFAULT_TIME_MS,
       category: this.category,
-      failureMessage: this.problem || '',
+      failureMessage: typeof this.problem === 'string' ? this.problem : '',
       failureText
     })
   }
@@ -78,7 +78,7 @@ export class ApexTestMessage {
       this.time = parseFloat(this.time)
     }
 
-    if (this.message || this.stackTrace) {
+    if (typeof this.message === 'string' || typeof this.stackTrace === 'string') {
       this.category = CATEGORY.FAILURE
     } else {
       this.category = CATEGORY.SUCCESS
@@ -93,7 +93,7 @@ export class ApexTestMessage {
   message: string
   stackTrace: string
 
-  toApexTestCase () {
+  toApexTestCase (): ApexTestCase {
     let failureText = ''
 
     if (this.category === CATEGORY.FAILURE) {
@@ -106,7 +106,7 @@ export class ApexTestMessage {
       name: this.methodName,
       time: this.time,
       category: this.category,
-      failureMessage: this.message || '',
+      failureMessage: typeof this.message === 'string' ? this.message : '',
       failureText
     })
   }

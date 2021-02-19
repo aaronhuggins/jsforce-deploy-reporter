@@ -2,22 +2,19 @@ import { FileCoverage } from 'istanbul-lib-coverage/lib/file-coverage'
 import * as fs from 'fs'
 import { ElocDetector } from './ElocDetector'
 import { typeExts, typeFolders } from './constants'
-import { CoverageType, ElocLine } from './types'
+import type { CoverageType, ElocLine } from './types'
+import type { JSforceReporterOptions } from '../types'
 
 /** Get Apex file coverage instance. */
-export async function getApexFileCoverage (coverage: any = {}, opts: any = {}) {
+export async function getApexFileCoverage (coverage: any = {}, opts: JSforceReporterOptions = {}): Promise<FileCoverage> {
   let executableLines = []
-  const sourceFile =
-    (typeof opts.packageRoot === 'string' ? opts.packageRoot + '/' : '') +
-    getTypeFolder(coverage.type) +
-    '/' +
-    coverage.name +
-    getTypeExt(coverage.type)
+  const pkgRoot = typeof opts.packageRoot === 'string' ? `${opts.packageRoot}/` : ''
+  const sourceFile = `${pkgRoot}${getTypeFolder(coverage.type)}/${coverage.name as string}${getTypeExt(coverage.type)}`
   const locationsHit = parseFloat(coverage.numLocations) - parseFloat(coverage.numLocationsNotCovered)
-  if (opts.detectExecutableLines) {
+  if (typeof opts.detectExecutableLines === 'boolean' && opts.detectExecutableLines) {
     executableLines = detectExecutableLines(sourceFile)
   }
-  const lines = parseLines(coverage.locationsNotCovered, executableLines, locationsHit)
+  const lines = parseLines(locationsHit, coverage.locationsNotCovered, executableLines)
   const fileCoverage = new FileCoverage(sourceFile)
 
   lines.forEach((line, index) => {
@@ -32,7 +29,7 @@ export async function getApexFileCoverage (coverage: any = {}, opts: any = {}) {
 }
 
 /** Parse the lines from the given Salesforce coverage metadata. */
-export function parseLines (linesMissed: any[] = [], executableLines = [], linesHit): ElocLine[] {
+export function parseLines (linesHit, linesMissed: any[] = [], executableLines = []): ElocLine[] {
   const result: ElocLine[] = []
   const missed: number[] = []
   const hit: number[] = []
@@ -42,7 +39,7 @@ export function parseLines (linesMissed: any[] = [], executableLines = [], lines
       let len = null
       if (executableLines.length > 0) {
         len = (
-          executableLines.find(line => line.int === lineMissed.int) || {
+          executableLines.find(line => line.int === lineMissed.int) ?? {
             len: null
           }
         ).len
@@ -98,7 +95,7 @@ export function detectExecutableLines (sourceFile: string): ElocLine[] {
 }
 
 /** Get the folder for coverage type. */
-export function getTypeFolder (coverageType: CoverageType) {
+export function getTypeFolder (coverageType: CoverageType): string {
   return typeof typeFolders[coverageType] === 'string' ? typeFolders[coverageType] : ''
 }
 

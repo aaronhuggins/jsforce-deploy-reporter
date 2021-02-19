@@ -11,7 +11,7 @@ export class ApexCoverageMap extends CoverageMap {
   apexCoverage: any[]
   options: any
 
-  async generate () {
+  async generate (): Promise<this> {
     const promises = []
 
     this.apexCoverage.forEach(coverage => {

@@ -5,6 +5,20 @@ import { Dependencies } from 'jest-stare/lib/processor/Dependencies'
 import * as mustache from 'mustache'
 import Vinyl from 'vinyl'
 import type { Transform } from 'stream'
+import type { IThirdPartyDependency } from 'jest-stare/lib/processor/doc/IThirdPartyDependency'
+
+interface JestStareSubstitute {
+  jestStareConfig: {
+    resultJson: string
+    jestStareConfigJson: string
+    jestGlobalConfigJson: string
+    resultHtml: string
+    report: boolean
+  }
+  rawResults: string
+  rawJestStareConfig: string
+  globalConfig: string
+}
 
 // @ts-expect-error Ignore this error because jest-stare incorrectly declares class.
 export class VinylProcessor extends Processor {
@@ -25,16 +39,16 @@ export class VinylProcessor extends Processor {
     )
   }
 
-  private generateReport (this: VinylProcessor, resultDir: string, substitute: any): void {
+  private generateReport (this: VinylProcessor, resultDir: string, substitute: JestStareSubstitute): void {
     const obtainWebFile = (this as any).obtainWebFile
     const obtainJsRenderFile = (this as any).obtainJsRenderFile
     this.writeVinyl(resultDir + substitute.jestStareConfig.resultJson, substitute.rawResults)
 
-    if (substitute.jestStareConfig.jestStareConfigJson) {
+    if (typeof substitute.jestStareConfig.jestStareConfigJson === 'string') {
       this.writeVinyl(resultDir + substitute.jestStareConfig.jestStareConfigJson, substitute.rawJestStareConfig)
     }
 
-    if (substitute.globalConfig && substitute.jestStareConfig.jestGlobalConfigJson) {
+    if (typeof substitute.globalConfig === 'string' && typeof substitute.jestStareConfig.jestGlobalConfigJson === 'string') {
       this.writeVinyl(resultDir + substitute.jestStareConfig.jestGlobalConfigJson, substitute.globalConfig)
     }
 
@@ -58,7 +72,7 @@ export class VinylProcessor extends Processor {
     )
 
     Dependencies.THIRD_PARTY_DEPENDENCIES.forEach(dependency => {
-      const updatedDependency = Object.assign({}, ...[dependency])
+      const updatedDependency: IThirdPartyDependency = Object.assign({}, ...[dependency])
 
       const location = require.resolve(dependency.requireDir + dependency.file)
 

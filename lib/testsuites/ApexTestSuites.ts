@@ -95,7 +95,7 @@ export class ApexTestSuites {
   }
 
   toJest (): JestSuites {
-    const firstSuite = this.testSuites[0] || {
+    const firstSuite = typeof this.testSuites[0] === 'object' ? this.testSuites[0] : {
       timestamp: new Date().toISOString()
     }
     const numFailedTestSuites = this.testSuites.reduce((sum, suite) => sum + (suite.isFailed() ? 1 : 0), 0)
