@@ -1,0 +1,13 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "strictNullChecks": true
+  },
+  "include": [
+    "test/ReporterSuite.ts",
+    "types/**/*.d.ts",
+    "test",
+    "gulpfile.ts"
+  ],
+  "exclude": ["dist"]
+}

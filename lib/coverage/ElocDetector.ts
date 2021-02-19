@@ -65,6 +65,7 @@ export class ElocDetector {
       end: RegExp
     }
   }
+
   sourceContents: string
   lines: ElocLine[]
 

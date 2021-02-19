@@ -6,7 +6,7 @@ import * as mustache from 'mustache'
 import Vinyl from 'vinyl'
 import type { Transform } from 'stream'
 
-// @ts-ignore Ignore this error because jest-stare incorrectly declares class.
+// @ts-expect-error Ignore this error because jest-stare incorrectly declares class.
 export class VinylProcessor extends Processor {
   constructor (transform: Transform, results: any, jestStareConfig: any, processorOptions?: any) {
     super(results, jestStareConfig, processorOptions)

@@ -3,7 +3,7 @@ export interface JSforceReporterOptions {
   outputRoot?: string
   detectExecutableLines?: boolean
   reporter?: string
-  reporters?: Array<string>
+  reporters?: string[]
   completedDate?: string
   watermarks?: {
     lines?: [number, number]

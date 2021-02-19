@@ -4,9 +4,10 @@ import * as assert from 'assert'
 import { JSforceReporter, jsforceGulpReporter } from '../index'
 
 const TMP_DIR = './.tmp'
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const testFile = require('./deploy-result.json')
 
-async function reporter (...reports) {
+async function reporter (...reports): Promise<void> {
   await new JSforceReporter(testFile.details, {
     reporters: [...reports],
     detectExecutableLines: true,
@@ -15,8 +16,8 @@ async function reporter (...reports) {
   }).report()
 }
 
-async function gulper (...reports) {
-  return new Promise((resolve, reject) => {
+async function gulper (...reports): Promise<void> {
+  return await new Promise((resolve, reject) => {
     gulp
       .src('./test/deploy-result.json', { base: './test' })
       .pipe(

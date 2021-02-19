@@ -19,15 +19,15 @@ class VinylContentWriter {
   vinyl: Vinyl
   transform: Transform
 
-  write (str) {
+  write (str: string): void {
     this.chunks.push(Buffer.from(str))
   }
 
-  println (str) {
+  println (str: string): void {
     this.write(`${str}\n`)
   }
 
-  close () {
+  close (): void {
     this.vinyl.contents = Buffer.concat(this.chunks)
     this.transform.push(this.vinyl)
   }
@@ -42,7 +42,7 @@ export class VinylWriter extends FileWriter {
 
   transform: Transform
 
-  writerForDir (subdir) {
+  writerForDir (subdir: string): VinylWriter {
     if (path.isAbsolute(subdir)) {
       throw new PluginError('VinylWriter', `Cannot create subdir writer for absolute path: ${subdir}`)
     }
@@ -50,7 +50,7 @@ export class VinylWriter extends FileWriter {
     return new VinylWriter(`${this.baseDir}/${subdir}`, this.transform)
   }
 
-  copyFile (source, dest, header) {
+  copyFile (source: string, dest: string, header: string): void {
     if (path.isAbsolute(dest)) {
       throw new PluginError('VinylWriter', `Cannot write to absolute path: ${dest}`)
     }
@@ -59,7 +59,7 @@ export class VinylWriter extends FileWriter {
 
     let contents
 
-    if (header) {
+    if (typeof header === 'string' && header.trim() !== '') {
       contents = Buffer.from(header + fs.readFileSync(source, 'utf8'), 'utf8')
     } else {
       contents = fs.readFileSync(source)
@@ -73,7 +73,7 @@ export class VinylWriter extends FileWriter {
     )
   }
 
-  writeFile (file) {
+  writeFile (file: string): VinylContentWriter {
     if (path.isAbsolute(file)) {
       throw new PluginError('VinylWriter', `Cannot write to absolute path: ${file}`)
     }

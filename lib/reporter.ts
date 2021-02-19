@@ -72,7 +72,7 @@ export class JSforceReporter {
           projectRoot: this.options.packageRoot,
           maxCols: 100
         })
-        // @ts-ignore Visitor does indeed have an execute method, Visitor classdeclaration is wrong.
+        // @ts-expect-error Visitor does indeed have an execute method, Visitor classdeclaration is wrong.
         .execute(context)
     })
 

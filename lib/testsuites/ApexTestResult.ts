@@ -125,7 +125,7 @@ export class ApexTestResult {
     if (this.transform) {
       const vinylProcessor = new VinylProcessor(this.transform, mergedTestSuites.toJest(), jestStareConfig)
 
-      // @ts-ignore We want to call this method because it's not truly private.
+      // @ts-expect-error We want to call this method because it's not truly private.
       vinylProcessor.generate()
     } else {
       processor(mergedTestSuites.toJest(), jestStareConfig)

@@ -5,8 +5,8 @@
  * @param  {string|Function} criteria - The criteria to group by.
  * @returns {object} The grouped object.
  */
-export function groupBy<T = Record<string, any>>(arr: T[], criteria: string | ((item: T) => string)): Record<string, T[]> {
-  return arr.reduce((obj: Record<string, T[]>, item: T) => {
+export function groupBy<T = Record<string, any>> (arr: T[], criteria: string | ((item: T) => string)): Record<string, T[]> {
+  return arr.reduce<Record<string, T[]>>((obj: Record<string, T[]>, item: T) => {
     // Check if the criteria is a function to run on the item or a property of it
     const key: string = typeof criteria === 'function' ? criteria(item) : item[criteria]
 
@@ -20,7 +20,7 @@ export function groupBy<T = Record<string, any>>(arr: T[], criteria: string | ((
 
     // Return the object to the next item in the loop
     return obj
-  }, {} as Record<string, T[]>)
+  }, {})
 }
 
 export function formatToSeconds (milliseconds: number = 1): string {

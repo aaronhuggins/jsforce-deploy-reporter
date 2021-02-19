@@ -67,7 +67,7 @@ export class ApexTestSuites {
 
   /** Generate all test suites by category from test cases. */
   async generateFromTestCases (...testCases: ApexTestCase[]): Promise<void> {
-    const promises: Promise<void>[] = []
+    const promises: Array<Promise<void>> = []
     const byClassname = groupBy(testCases, 'classname')
 
     Object.keys(byClassname).forEach(key => {

@@ -13,12 +13,12 @@ declare module 'istanbul-lib-coverage/lib/file-coverage' {
     branches: FileCoverageTotals
     merge (): CoverageSummary
     toJSON (): any
-    isEmpty(): boolean
+    isEmpty (): boolean
     data: any
   }
 
   export class FileCoverage {
-    constructor(pathOrObj: Record<string, any> | FileCoverage | string)
+    constructor (pathOrObj: Record<string, any> | FileCoverage | string)
 
     all?: boolean
     data: FileCoverage
