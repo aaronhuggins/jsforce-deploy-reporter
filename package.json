@@ -32,6 +32,7 @@
   "license": "MIT",
   "devDependencies": {
     "@nhs-llc/gulp-jsforce-deploy": "^2.2.0",
+    "@types/gulp": "^4.0.8",
     "@types/istanbul-lib-coverage": "^2.0.3",
     "@types/istanbul-lib-report": "^3.0.0",
     "@types/istanbul-reports": "^3.0.0",

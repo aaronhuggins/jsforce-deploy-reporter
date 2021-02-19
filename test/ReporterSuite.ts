@@ -1,12 +1,12 @@
-const gulp = require('gulp')
-const fs = require('fs-extra')
-const assert = require('assert')
-const testFile = require('./deploy-result.json')
-const { JSforceReporter, jsforceGulpReporter } = require('../index')
+import * as gulp from 'gulp'
+import * as fs from 'fs-extra'
+import * as assert from 'assert'
+import { JSforceReporter, jsforceGulpReporter } from '../index'
 
 const TMP_DIR = './.tmp'
+const testFile = require('./deploy-result.json')
 
-const reporter = async function reporter (...reports) {
+async function reporter (...reports) {
   await new JSforceReporter(testFile.details, {
     reporters: [...reports],
     detectExecutableLines: true,
@@ -15,7 +15,7 @@ const reporter = async function reporter (...reports) {
   }).report()
 }
 
-const gulper = async function gulper (...reports) {
+async function gulper (...reports) {
   return new Promise((resolve, reject) => {
     gulp
       .src('./test/deploy-result.json', { base: './test' })
@@ -77,12 +77,14 @@ describe('Deploy Reporter', () => {
     })
 
     it('should coerce property "reporters" to array of reporters', async () => {
-      await new JSforceReporter(testFile.details, {
+      const options: any = {
         reporters: 'lcovonly',
         detectExecutableLines: false,
         packageRoot: './test',
         outputRoot: TMP_DIR
-      }).report()
+      }
+
+      await new JSforceReporter(testFile.details, options).report()
     })
   })
 
