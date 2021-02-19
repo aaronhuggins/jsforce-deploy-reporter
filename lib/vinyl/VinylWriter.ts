@@ -1,11 +1,11 @@
-const fs = require('fs')
-const path = require('path')
-const FileWriter = require('istanbul-lib-report/lib/file-writer')
-const PluginError = require('plugin-error')
-const Vinyl = require('vinyl')
+import * as fs from 'fs'
+import * as path from 'path'
+import FileWriter from 'istanbul-lib-report/lib/file-writer'
+import PluginError from 'plugin-error'
+import Vinyl from 'vinyl'
 
 class VinylContentWriter {
-  constructor (path, transform) {
+  constructor (path: string, transform: Vinyl[]) {
     this.transform = transform
     this.vinyl = new Vinyl({
       path,
@@ -13,6 +13,10 @@ class VinylContentWriter {
     })
     this.chunks = []
   }
+
+  chunks: Buffer[]
+  vinyl: Vinyl
+  transform: Vinyl[]
 
   write (str) {
     this.chunks.push(Buffer.from(str))
@@ -28,16 +32,18 @@ class VinylContentWriter {
   }
 }
 
-class VinylWriter extends FileWriter {
-  constructor (baseDir, transform) {
+export class VinylWriter extends FileWriter {
+  constructor (baseDir: string, transform: Vinyl[]) {
     super(baseDir)
 
     this.transform = transform
   }
 
+  transform: Vinyl[]
+
   writerForDir (subdir) {
     if (path.isAbsolute(subdir)) {
-      throw new PluginError(`Cannot create subdir writer for absolute path: ${subdir}`)
+      throw new PluginError('VinylWriter', `Cannot create subdir writer for absolute path: ${subdir}`)
     }
 
     return new VinylWriter(`${this.baseDir}/${subdir}`, this.transform)
@@ -45,7 +51,7 @@ class VinylWriter extends FileWriter {
 
   copyFile (source, dest, header) {
     if (path.isAbsolute(dest)) {
-      throw new PluginError(`Cannot write to absolute path: ${dest}`)
+      throw new PluginError('VinylWriter', `Cannot write to absolute path: ${dest}`)
     }
 
     dest = path.resolve(this.baseDir, dest)
@@ -68,15 +74,11 @@ class VinylWriter extends FileWriter {
 
   writeFile (file) {
     if (path.isAbsolute(file)) {
-      throw new PluginError(`Cannot write to absolute path: ${file}`)
+      throw new PluginError('VinylWriter', `Cannot write to absolute path: ${file}`)
     }
 
     file = path.resolve(this.baseDir, file)
 
     return new VinylContentWriter(file, this.transform)
   }
-}
-
-module.exports = {
-  VinylWriter
 }
