@@ -1,3 +1,6 @@
+import { ApexTestSuites } from './ApexTestSuites'
+import { ApexComponentMessage } from './messages'
+
 export interface JunitCase {
   $: {
     id: string
@@ -111,4 +114,141 @@ export interface JestSuites {
   testResults: JestSuite[]
   wasInterrupted: boolean
   coverageMap: Record<string, any>
+}
+
+export interface DeployMessage {
+  changed: boolean
+  columnNumber: number
+  componentType: string
+  created: boolean
+  createdDate: string
+  deleted: boolean
+  fileName: string
+  fullName: string
+  id: string
+  lineNumber: number
+  problem?: string
+  problemType?: 'Warning' | 'Error'
+  success: boolean
+}
+
+export interface FileProperties {
+  createdById: string
+  createdByName: string
+  createdDate: string
+  fileName: string
+  fullName: string
+  id: string
+  lastModifiedById: string
+  lastModifiedByName: string
+  lastModifiedDate: string
+  manageableState: string
+  namespacePrefix: string
+  type: string
+}
+
+export interface RetrieveMessage {
+  fileName: string
+  problem: string
+}
+
+export interface RetrieveResult {
+  done: boolean
+  errorMessage: string
+  errorStatusCode: string
+  fileProperties: FileProperties[]
+  id: string
+  messages: RetrieveMessage[]
+  status: string
+  success: boolean
+  zipFile?: string
+}
+
+export interface CodeLocation {
+  column: number | string
+  line: number | string
+  numExecutions: number | string
+  time: number | string
+}
+
+export interface CodeCoverageResult {
+  dmlInfo: CodeLocation[]
+  id: string
+  locationsNotCovered: CodeLocation[]
+  methodInfo: CodeLocation[]
+  name: string
+  namespace: string
+  numLocations: number | string
+  soqlInfo: CodeLocation[]
+  type: string
+}
+
+export interface CodeCoverageWarning {
+  id: string
+  message: string
+  name: string
+  namespace: string
+}
+
+export interface RunTestFailure {
+  id: string
+  message: string
+  methodName: string
+  name: string
+  namespace: string
+  seeAllData: boolean
+  stackTrace: string
+  time: number | string
+  type: string
+}
+
+export interface FlowCoverageResult {
+  elementsNotCovered: string
+  flowId: string
+  flowName: string
+  flowNamespace: string
+  numElements: number | string
+  numElementsNotCovered: number | string
+  processType: string
+}
+
+export interface FlowCoverageWarning {
+  flowId: string
+  flowName: string
+  flowNamespace: string
+  message: string
+}
+
+export interface RunTestSuccess {
+  id: string
+  methodName: string
+  name: string
+  namespace: string
+  seeAllData: boolean
+  time: number | string
+}
+
+export interface RunTestResult {
+  apexLogId: string
+  codeCoverage: CodeCoverageResult[]
+  codeCoverageWarnings: CodeCoverageWarning[]
+  failures: RunTestFailure[]
+  flowCoverage: FlowCoverageResult[]
+  flowCoverageWarnings: FlowCoverageWarning[]
+  numFailures: number | string
+  numTestsRun: number | string
+  successes: RunTestSuccess[]
+  totalTime: number | string
+}
+
+export interface DeployDetails {
+  componentFailures: DeployMessage[]
+  componentSuccesses: DeployMessage[]
+  retrieveResult: RetrieveResult
+  runTestResult: RunTestResult
+}
+
+export interface ApexResult {
+  messages: ApexComponentMessage[]
+  testsuites: ApexTestSuites
 }

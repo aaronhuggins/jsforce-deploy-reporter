@@ -1,13 +1,17 @@
-const processor = require('jest-stare')
-const fs = require('fs')
-const { VinylProcessor } = require('../vinyl')
-const { DEFAULT_TIME_MS } = require('./constants')
-const { ApexComponentMessage, ApexTestMessage } = require('./messages')
-const { ApexTestSuites } = require('./ApexTestSuites')
-const { write } = require('./write')
+import Vinyl from 'vinyl'
+import { entry as processor } from 'jest-stare/lib/entry'
+import * as fs from 'fs'
+import { VinylProcessor } from '../vinyl'
+import { DEFAULT_TIME_MS } from './constants'
+import { ApexComponentMessage, ApexTestMessage } from './messages'
+import { ApexTestSuites } from './ApexTestSuites'
+import { write } from './write'
+import { DeployDetails } from 'jsforce-deploy-reporter'
+import { ApexResult } from './types'
 
-class ApexTestResult {
-  constructor (deployDetails = {}, options = {}, transform = false) {
+/** Reference: https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/meta_deployresult.htm */
+export class ApexTestResult {
+  constructor (deployDetails: Partial<DeployDetails> = {}, options: any = {}, transform: false | Vinyl[] = false) {
     this.deployDetails = deployDetails
     this.options = options
     this.components = {
@@ -28,8 +32,14 @@ class ApexTestResult {
     }
 
     this.transform = transform
-    this.write = write
+    this.write = write.bind(this)
   }
+
+  deployDetails: DeployDetails
+  options: any
+  components: ApexResult
+  tests: ApexResult
+  transform: false | Vinyl[]
 
   async generate () {
     const componentPromises = []
@@ -66,9 +76,9 @@ class ApexTestResult {
     if (this.options.junitLevel === 'tests' || this.options.junitLevel === 'all') {
       const { numFailures, numTestsRun, totalTime } = this.deployDetails.runTestResult
 
-      this.tests.testsuites.failures = parseFloat(numFailures)
-      this.tests.testsuites.tests = parseFloat(numTestsRun)
-      this.tests.testsuites.time = parseFloat(totalTime)
+      this.tests.testsuites.failures = parseFloat(numFailures as any)
+      this.tests.testsuites.tests = parseFloat(numTestsRun as any)
+      this.tests.testsuites.time = parseFloat(totalTime as any)
       this.components.testsuites.completed = new Date(
         this.components.testsuites.completed.getTime() - this.tests.testsuites.time
       )
@@ -122,8 +132,4 @@ class ApexTestResult {
   }
 
   write (json = false) {}
-}
-
-module.exports = {
-  ApexTestResult
 }

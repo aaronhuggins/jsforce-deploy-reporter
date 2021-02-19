@@ -1,8 +1,9 @@
 import Vinyl from 'vinyl'
 import * as xml2js from 'xml2js'
 import * as fs from 'fs'
+import { ApexTestResult } from './ApexTestResult'
 
-export function write (json: boolean = false): void {
+export function write (this: ApexTestResult, json: boolean = false): void {
   const builder = new xml2js.Builder({
     renderOpts: {
       pretty: true,
