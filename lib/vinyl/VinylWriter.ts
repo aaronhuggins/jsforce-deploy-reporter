@@ -3,9 +3,10 @@ import * as path from 'path'
 import FileWriter from 'istanbul-lib-report/lib/file-writer'
 import PluginError from 'plugin-error'
 import Vinyl from 'vinyl'
+import type { Transform } from 'stream'
 
 class VinylContentWriter {
-  constructor (path: string, transform: Vinyl[]) {
+  constructor (path: string, transform: Transform) {
     this.transform = transform
     this.vinyl = new Vinyl({
       path,
@@ -16,7 +17,7 @@ class VinylContentWriter {
 
   chunks: Buffer[]
   vinyl: Vinyl
-  transform: Vinyl[]
+  transform: Transform
 
   write (str) {
     this.chunks.push(Buffer.from(str))
@@ -33,13 +34,13 @@ class VinylContentWriter {
 }
 
 export class VinylWriter extends FileWriter {
-  constructor (baseDir: string, transform: Vinyl[]) {
+  constructor (baseDir: string, transform: Transform) {
     super(baseDir)
 
     this.transform = transform
   }
 
-  transform: Vinyl[]
+  transform: Transform
 
   writerForDir (subdir) {
     if (path.isAbsolute(subdir)) {

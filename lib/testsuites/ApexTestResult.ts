@@ -6,12 +6,12 @@ import { DEFAULT_TIME_MS } from './constants'
 import { ApexComponentMessage, ApexTestMessage } from './messages'
 import { ApexTestSuites } from './ApexTestSuites'
 import { write } from './write'
-import { DeployDetails } from 'jsforce-deploy-reporter'
-import { ApexResult } from './types'
+import { ApexResult, DeployDetails } from './types'
+import type { Transform } from 'stream'
 
 /** Reference: https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/meta_deployresult.htm */
 export class ApexTestResult {
-  constructor (deployDetails: Partial<DeployDetails> = {}, options: any = {}, transform: false | Vinyl[] = false) {
+  constructor (deployDetails: Partial<DeployDetails> = {}, options: any = {}, transform: false | Transform = false) {
     this.deployDetails = deployDetails
     this.options = options
     this.components = {
@@ -35,11 +35,11 @@ export class ApexTestResult {
     this.write = write.bind(this)
   }
 
-  deployDetails: DeployDetails
+  deployDetails: Partial<DeployDetails>
   options: any
   components: ApexResult
   tests: ApexResult
-  transform: false | Vinyl[]
+  transform: false | Transform
 
   async generate () {
     const componentPromises = []
@@ -125,6 +125,7 @@ export class ApexTestResult {
     if (this.transform) {
       const vinylProcessor = new VinylProcessor(this.transform, mergedTestSuites.toJest(), jestStareConfig)
 
+      // @ts-ignore We want to call this method because it's not truly private.
       vinylProcessor.generate()
     } else {
       processor(mergedTestSuites.toJest(), jestStareConfig)

@@ -3,6 +3,7 @@ declare module 'istanbul-lib-coverage/lib/file-coverage' {
     total: number
     covered: number
     skipped: number
+    pct: number
   }
 
   export class CoverageSummary {
@@ -10,6 +11,10 @@ declare module 'istanbul-lib-coverage/lib/file-coverage' {
     functions: FileCoverageTotals
     statements: FileCoverageTotals
     branches: FileCoverageTotals
+    merge (): CoverageSummary
+    toJSON (): any
+    isEmpty(): boolean
+    data: any
   }
 
   export class FileCoverage {
@@ -30,7 +35,7 @@ declare module 'istanbul-lib-coverage/lib/file-coverage' {
     getBranchCoverageByLine (): Record<string | number, any>
     toJSON (): FileCoverage
     merge (other: FileCoverage): void
-    computeSimpleTotals (property: string | number): FileCoverageTotals
+    computeSimpleTotals (property?: string | number): FileCoverageTotals
     computeBranchTotals (): FileCoverageTotals
     resetHits (): void
     toSummary (): CoverageSummary

@@ -4,16 +4,17 @@ import { Constants } from 'jest-stare/lib/processor/Constants'
 import { Dependencies } from 'jest-stare/lib/processor/Dependencies'
 import * as mustache from 'mustache'
 import Vinyl from 'vinyl'
+import type { Transform } from 'stream'
 
 // @ts-ignore Ignore this error because jest-stare incorrectly declares class.
 export class VinylProcessor extends Processor {
-  constructor (transform: Vinyl[], results: any, jestStareConfig: any, processorOptions: any) {
+  constructor (transform: Transform, results: any, jestStareConfig: any, processorOptions?: any) {
     super(results, jestStareConfig, processorOptions)
 
     this.transform = transform
   }
 
-  transform: Vinyl[]
+  transform: Transform
 
   private writeVinyl (path: string, str: string): void {
     this.transform.push(

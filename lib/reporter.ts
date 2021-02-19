@@ -1,11 +1,14 @@
-const libReport = require('istanbul-lib-report')
-const reports = require('istanbul-reports')
-const { ApexCoverageMap } = require('./coverage')
-const { ApexTestResult } = require('./testsuites')
-const { VinylWriter } = require('./vinyl')
+import * as libReport from 'istanbul-lib-report'
+import * as reports from 'istanbul-reports'
+import { ApexCoverageMap } from './coverage'
+import { ApexTestResult } from './testsuites'
+import { VinylWriter } from './vinyl'
+import type { DeployDetails } from './testsuites/types'
+import type { JSforceReporterOptions } from './types'
+import type { Transform } from 'stream'
 
-class JSforceReporter {
-  constructor (details, options = {}, transform = false) {
+export class JSforceReporter {
+  constructor (details: DeployDetails, options: JSforceReporterOptions = {}, transform: false | Transform = false) {
     this.options = options
     this.details = details
     if (typeof this.options.reporter === 'string') {
@@ -26,6 +29,10 @@ class JSforceReporter {
 
     this.transform = transform
   }
+
+  details: DeployDetails
+  options: JSforceReporterOptions
+  transform: false | Transform
 
   async report () {
     const context = libReport.createContext({
@@ -57,7 +64,7 @@ class JSforceReporter {
       }
     }
 
-    this.options.reporters.forEach(reporter => {
+    this.options.reporters.forEach((reporter: any) => {
       reports
         .create(reporter, {
           skipEmpty: false,
@@ -65,6 +72,7 @@ class JSforceReporter {
           projectRoot: this.options.packageRoot,
           maxCols: 100
         })
+        // @ts-ignore Visitor does indeed have an execute method, Visitor classdeclaration is wrong.
         .execute(context)
     })
 
@@ -80,8 +88,4 @@ class JSforceReporter {
       }
     }
   }
-}
-
-module.exports = {
-  JSforceReporter
 }

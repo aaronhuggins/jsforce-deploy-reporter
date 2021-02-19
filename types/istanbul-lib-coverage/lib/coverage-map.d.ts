@@ -7,10 +7,11 @@ declare module 'istanbul-lib-coverage/lib/coverage-map' {
     data: Record<string, any>
 
     merge(obj: CoverageMap): void
-    filter(filterCB: (key: string | number) => boolean): void
+    filter(filterCB: (key: string) => boolean): void
     files (): string[]
     fileCoverageFor (file: string): FileCoverage
     addFileCoverage (fc: FileCoverage): void
     getCoverageSummary (): CoverageSummary
+    toJSON (): any
   }
 }
