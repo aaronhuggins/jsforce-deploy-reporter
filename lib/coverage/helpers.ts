@@ -12,7 +12,7 @@ export async function getApexFileCoverage (coverage: any = {}, opts: JSforceRepo
   const sourceFile = `${pkgRoot}${getTypeFolder(coverage.type)}/${coverage.name as string}${getTypeExt(coverage.type)}`
   const locationsHit = parseFloat(coverage.numLocations) - parseFloat(coverage.numLocationsNotCovered)
   if (typeof opts.detectExecutableLines === 'boolean' && opts.detectExecutableLines) {
-    executableLines = detectExecutableLines(sourceFile)
+    executableLines = detectExecutableLines(sourceFile, opts.useApexParser)
   }
   const lines = parseLines(locationsHit, coverage.locationsNotCovered, executableLines)
   const fileCoverage = new FileCoverage(sourceFile)
@@ -83,10 +83,10 @@ export function parseLines (linesHit, linesMissed: any[] = [], executableLines =
 }
 
 /** Detect executable lines from a given source file path. */
-export function detectExecutableLines (sourceFile: string): ElocData[] {
+export function detectExecutableLines (sourceFile: string, useApexParser?: boolean): ElocData[] {
   if (fs.existsSync(sourceFile)) {
     const apexString = fs.readFileSync(sourceFile, 'utf8')
-    const detector = new ElocDetector(apexString).detect()
+    const detector = new ElocDetector(apexString, useApexParser).detect()
 
     return detector.lines
   }

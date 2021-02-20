@@ -1,4 +1,5 @@
 export interface JSforceReporterOptions {
+  useApexParser?: boolean
   packageRoot?: string
   outputRoot?: string
   detectExecutableLines?: boolean
