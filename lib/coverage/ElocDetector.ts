@@ -1,6 +1,6 @@
 import { ApexLexer, ApexParser, CaseInsensitiveInputStream } from 'apex-parser'
 import { CommonTokenStream } from 'antlr4ts'
-import { ElocLine } from './types'
+import type { ElocData } from './types'
 
 /** Class for detecting Executable Lines of Code. */
 export class ElocDetector {
@@ -72,7 +72,7 @@ export class ElocDetector {
   }
 
   sourceContents: string
-  lines: ElocLine[]
+  lines: ElocData[]
 
   detect (): this {
     if (this.useApexParser) {

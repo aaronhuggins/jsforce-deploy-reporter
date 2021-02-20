@@ -2,7 +2,7 @@ import { FileCoverage } from 'istanbul-lib-coverage/lib/file-coverage'
 import * as fs from 'fs'
 import { ElocDetector } from './ElocDetector'
 import { typeExts, typeFolders } from './constants'
-import type { CoverageType, ElocLine } from './types'
+import type { CoverageType, ElocData } from './types'
 import type { JSforceReporterOptions } from '../types'
 
 /** Get Apex file coverage instance. */
@@ -29,8 +29,8 @@ export async function getApexFileCoverage (coverage: any = {}, opts: JSforceRepo
 }
 
 /** Parse the lines from the given Salesforce coverage metadata. */
-export function parseLines (linesHit, linesMissed: any[] = [], executableLines = []): ElocLine[] {
-  const result: ElocLine[] = []
+export function parseLines (linesHit, linesMissed: any[] = [], executableLines = []): ElocData[] {
+  const result: ElocData[] = []
   const missed: number[] = []
   const hit: number[] = []
 
@@ -83,7 +83,7 @@ export function parseLines (linesHit, linesMissed: any[] = [], executableLines =
 }
 
 /** Detect executable lines from a given source file path. */
-export function detectExecutableLines (sourceFile: string): ElocLine[] {
+export function detectExecutableLines (sourceFile: string): ElocData[] {
   if (fs.existsSync(sourceFile)) {
     const apexString = fs.readFileSync(sourceFile, 'utf8')
     const detector = new ElocDetector(apexString).detect()

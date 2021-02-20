@@ -2,8 +2,8 @@
   "name": "jsforce-deploy-reporter",
   "version": "1.6.1",
   "description": "Take a JSforce metadata deploy result and get code coverage and test result reports!",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "format": "prettier-standard --format"
   },
@@ -25,9 +25,7 @@
     "deploy"
   ],
   "files": [
-    "lib",
-    "index.d.ts",
-    "index.js"
+    "dist"
   ],
   "license": "MIT",
   "devDependencies": {
