@@ -1,7 +1,7 @@
 {
   "name": "jsforce-deploy-reporter",
-  "version": "1.6.1",
-  "description": "Take a JSforce metadata deploy result and get code coverage and test result reports!",
+  "version": "2.0.0",
+  "description": "Take a Salesforce metadata deploy result and get code coverage and test result reports!",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
@@ -10,10 +10,7 @@
     "format": "gulp format",
     "test": "gulp coverage"
   },
-  "author": {
-    "name": "Net Health Shops LLC Tech Team",
-    "url": "https://serenityhealth.com/"
-  },
+  "author": "Aaron Huggins <aaron.huggins@gmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/ahuggins-nhs/jsforce-deploy-reporter.git"
@@ -25,7 +22,11 @@
     "force.com",
     "database.com",
     "gulpplugin",
-    "deploy"
+    "deploy",
+    "jsforce",
+    "junit",
+    "lcov",
+    "coverage"
   ],
   "files": [
     "dist"
