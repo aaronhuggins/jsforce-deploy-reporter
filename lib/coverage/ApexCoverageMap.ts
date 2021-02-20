@@ -1,9 +1,10 @@
 import { CoverageMap } from 'istanbul-lib-coverage/lib/coverage-map'
 import { getApexFileCoverage } from './helpers'
+import type { FileCoverage, FileCoverageData } from 'istanbul-lib-coverage/lib/file-coverage'
 
 export class ApexCoverageMap extends CoverageMap {
   constructor (apexCoverage: any[] = [], options: any = {}) {
-    super()
+    super({})
     this.apexCoverage = apexCoverage
     this.options = options
   }
@@ -11,7 +12,11 @@ export class ApexCoverageMap extends CoverageMap {
   apexCoverage: any[]
   options: any
 
-  async generate (): Promise<this> {
+  addFileCoverage (pathOrObject: string | FileCoverage | FileCoverageData): void {
+    super.addFileCoverage(pathOrObject)
+  }
+
+  async generate (): Promise<CoverageMap> {
     const promises = []
 
     this.apexCoverage.forEach(coverage => {

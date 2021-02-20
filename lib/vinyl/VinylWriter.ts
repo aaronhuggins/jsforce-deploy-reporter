@@ -40,6 +40,7 @@ export class VinylWriter extends FileWriter {
     this.transform = transform
   }
 
+  baseDir: string
   transform: Transform
 
   writerForDir (subdir: string): VinylWriter {

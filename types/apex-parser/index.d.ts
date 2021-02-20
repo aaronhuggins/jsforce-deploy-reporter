@@ -1,6 +1,8 @@
-export * from './ApexLexer'
-export * from './ApexParser'
-export * from './CaseInsensitiveInputStream'
-export * from './ThrowingErrorListener'
+declare module 'apex-parser' {
+  export * from 'apex-parser/lib/ApexLexer'
+  export * from 'apex-parser/lib/ApexParser'
+  export * from 'apex-parser/lib/CaseInsensitiveInputStream'
+  export * from 'apex-parser/lib/ThrowingErrorListener'
 
-export function check (): void
+  export function check (): void
+}

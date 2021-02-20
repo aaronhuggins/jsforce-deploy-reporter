@@ -1,9 +1,15 @@
+import { ApexLexer, ApexParser, CaseInsensitiveInputStream } from 'apex-parser'
+import { CommonTokenStream } from 'antlr4ts'
 import { ElocLine } from './types'
 
 /** Class for detecting Executable Lines of Code. */
 export class ElocDetector {
   /** Construct an instance of ElocDetector. */
-  constructor (sourceContents: string = '') {
+  constructor (sourceContents: string = '', useApexParser: boolean = false) {
+    this.sourceContents = sourceContents
+    this.lines = []
+    this.useApexParser = useApexParser
+
     this.rules = [
       // Class getter/setter annotation.
       /(get;)|(set;)/,
@@ -37,10 +43,9 @@ export class ElocDetector {
         end: /}/
       }
     }
-    this.sourceContents = sourceContents
-    this.lines = []
   }
 
+  useApexParser: boolean
   rules: RegExp[]
   skipLibrary: {
     debugLine: RegExp
@@ -70,6 +75,24 @@ export class ElocDetector {
   lines: ElocLine[]
 
   detect (): this {
+    if (this.useApexParser) {
+      this.detectWithApexParser()
+    } else {
+      this.detectWithRegexp()
+    }
+
+    return this
+  }
+
+  private detectWithApexParser () {
+    const lexer = new ApexLexer(new CaseInsensitiveInputStream('public class Hello {}'))
+    const tokens = new CommonTokenStream(lexer)
+
+    const parser = new ApexParser(tokens)
+    const context = parser.compilationUnit()
+  }
+
+  private detectWithRegexp () {
     const lines = this.sourceContents.split('\n')
     let multiLineComment = false
     let soqlQuery = false
@@ -131,7 +154,5 @@ export class ElocDetector {
         }
       })
     })
-
-    return this
   }
 }
