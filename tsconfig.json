@@ -19,8 +19,11 @@
       "apex-parser",
       "jest-stare",
       "node",
-      "jest"
+      "mocha"
     ]
   },
-  "exclude": ["dist", "test", "gulpfile.ts", "jest.config.ts"]
+  "exclude": ["dist", "test", "gulpfile.ts", "jest.config.ts"],
+  "ts-node": {
+    "files": true
+  }
 }
