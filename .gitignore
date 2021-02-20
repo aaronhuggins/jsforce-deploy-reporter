@@ -108,3 +108,5 @@ dist
 
 # Folder for unit test output
 /.tmp
+*.bak
+tmp.ts

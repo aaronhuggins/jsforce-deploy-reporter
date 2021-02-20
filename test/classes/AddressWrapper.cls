@@ -17,7 +17,7 @@ public class AddressWrapper {
 
     public AddressWrapper(String streetAddress1, String streetAddress2, String city, String state, String postalCode, String country, Boolean defaultToBlank) {
         if (defaultToBlank) {
-            this.streetAddress1 = String.isEmpty(streetAddress1) ? '' : streetAddress1;
+            this.streetAddress1 = String.isEmpty (streetAddress1) ? '' : streetAddress1;
             this.streetAddress2 = String.isEmpty(streetAddress2) ? '' : streetAddress2;
             this.city = String.isEmpty(city) ? '' : city;
             this.state = String.isEmpty(state) ? '' : state;
@@ -31,5 +31,9 @@ public class AddressWrapper {
             this.postalCode = postalCode;
             this.country = country;
         }
+        Double a = 0;
+
+        a += 1;
+        Double b;
     }
 }

@@ -1,16 +1,16 @@
 {
   "name": "jsforce-deploy-reporter",
-  "version": "1.6.1",
-  "description": "Take a JSforce metadata deploy result and get code coverage and test result reports!",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "version": "2.0.0",
+  "description": "Take a Salesforce metadata deploy result and get code coverage and test result reports!",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
-    "format": "prettier-standard --format"
+    "prepack": "gulp compile",
+    "postpack": "gulp cleanup",
+    "format": "gulp format",
+    "test": "gulp coverage"
   },
-  "author": {
-    "name": "Net Health Shops LLC Tech Team",
-    "url": "https://serenityhealth.com/"
-  },
+  "author": "Aaron Huggins <aaron.huggins@gmail.com>",
   "repository": {
     "type": "git",
     "url": "https://github.com/ahuggins-nhs/jsforce-deploy-reporter.git"
@@ -22,32 +22,56 @@
     "force.com",
     "database.com",
     "gulpplugin",
-    "deploy"
+    "deploy",
+    "jsforce",
+    "junit",
+    "lcov",
+    "coverage"
   ],
   "files": [
-    "lib",
-    "index.d.ts",
-    "index.js"
+    "dist"
   ],
   "license": "MIT",
   "devDependencies": {
+    "@istanbuljs/nyc-config-typescript": "^1.0.1",
     "@nhs-llc/gulp-jsforce-deploy": "^2.2.0",
-    "fs-extra": "^8.1.0",
+    "@types/fs-extra": "^9.0.7",
+    "@types/gulp": "^4.0.8",
+    "@types/istanbul-lib-coverage": "^2.0.3",
+    "@types/istanbul-lib-report": "^3.0.0",
+    "@types/istanbul-reports": "^3.0.0",
+    "@types/mocha": "^8.2.1",
+    "@types/mustache": "^4.1.1",
+    "@types/node": "^14.14.31",
+    "@types/through2": "^2.0.36",
+    "@types/uuid": "^8.3.0",
+    "@types/vinyl": "^2.0.4",
+    "@types/xml2js": "^0.4.8",
+    "fs-extra": "^9.1.0",
     "gulp": "^4.0.2",
-    "gulp-shell": "^0.7.1",
-    "gulp-zip": "^5.0.1",
-    "jest": "^25.1.0",
-    "jest-cli": "^25.1.0",
-    "prettier-standard": "^16.1.0",
-    "typescript": "^3.7.5"
+    "gulp-shell": "^0.8.0",
+    "gulp-zip": "^5.0.2",
+    "mocha": "^8.3.0",
+    "nyc": "^15.1.0",
+    "source-map-support": "^0.5.19",
+    "ts-jest": "^26.5.1",
+    "ts-node": "^9.1.1",
+    "typedoc": "^0.20.26",
+    "typescript": "^4.1.5"
   },
   "dependencies": {
+    "apex-parser": "^2.6.1",
     "istanbul-lib-coverage": "^3.0.0",
     "istanbul-lib-report": "^3.0.0",
-    "istanbul-reports": "^3.0.0",
-    "jest-stare": "^1.26.0",
-    "uuid": "^3.4.0",
-    "vinyl": "^2.2.0",
+    "istanbul-reports": "^3.0.2",
+    "jest-stare": "^2.2.1",
+    "uuid": "^8.3.2",
+    "vinyl": "^2.2.1",
     "xml2js": "^0.4.23"
+  },
+  "ts-standard": {
+    "ignore": [
+      "docs/**/*"
+    ]
   }
 }

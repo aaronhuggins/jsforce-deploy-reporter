@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "lib": ["es2019"],
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es2019",
+    "outDir": "dist",
+    "rootDir": ".",
+    "sourceMap": true,
+    "strict": false,
+    "declaration": true,
+    "typeRoots": [
+      "node_modules/@types",
+      "types"
+    ],
+    "types": [
+      "istanbul-lib-coverage",
+      "istanbul-lib-report",
+      "apex-parser",
+      "jest-stare",
+      "node",
+      "mocha"
+    ]
+  },
+  "exclude": ["dist", "docs", "test", "gulpfile.ts", "jest.config.ts"],
+  "ts-node": {
+    "files": true
+  }
+}
