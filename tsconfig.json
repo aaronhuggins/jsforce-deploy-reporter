@@ -17,8 +17,10 @@
       "istanbul-lib-coverage",
       "istanbul-lib-report",
       "apex-parser",
-      "jest-stare"
+      "jest-stare",
+      "node",
+      "jest"
     ]
   },
-  "exclude": ["dist", "test", "gulpfile.ts"]
+  "exclude": ["dist", "test", "gulpfile.ts", "jest.config.ts"]
 }

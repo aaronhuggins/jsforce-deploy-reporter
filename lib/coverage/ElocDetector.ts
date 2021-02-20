@@ -1,11 +1,12 @@
 import { ApexLexer, ApexParser, CaseInsensitiveInputStream } from 'apex-parser'
-import { CommonTokenStream } from 'antlr4ts'
+import { CommonTokenStream, ParserRuleContext } from 'antlr4ts'
+import type { ApexParserListener } from 'apex-parser/lib/ApexParserListener'
 import type { ElocData } from './types'
 
 /** Class for detecting Executable Lines of Code. */
 export class ElocDetector {
   /** Construct an instance of ElocDetector. */
-  constructor (sourceContents: string = '', useApexParser: boolean = false) {
+  constructor (sourceContents: string = '', useApexParser: boolean = true) {
     this.sourceContents = sourceContents
     this.lines = []
     this.useApexParser = useApexParser
@@ -85,11 +86,39 @@ export class ElocDetector {
   }
 
   private detectWithApexParser () {
-    const lexer = new ApexLexer(new CaseInsensitiveInputStream('public class Hello {}'))
+    const lexer = new ApexLexer(new CaseInsensitiveInputStream({}, this.sourceContents))
     const tokens = new CommonTokenStream(lexer)
-
     const parser = new ApexParser(tokens)
-    const context = parser.compilationUnit()
+    const elocMap = new Map<number, ElocData>()
+    const locator = (ctx: ParserRuleContext): void => {
+      const int = ctx.start.line
+      const len = Math.max(0, ctx.start.charPositionInLine) + ctx.start.text.length
+
+      if (!elocMap.has(int)) {
+        elocMap.set(int, { int, len })
+      }
+    }
+    const listener: ApexParserListener = {
+      enterConstructorDeclaration: locator,
+      enterMethodDeclaration: locator,
+      enterCreator: locator,
+      enterGetter: locator,
+      enterSetter: locator,
+      enterMethodCall: locator,
+      enterMethodCallExpression: locator,
+      enterDotMethodCall: locator,
+      enterNewExpression: locator,
+      enterClassCreatorRest: locator,
+      enterArrayCreatorRest: locator,
+      enterNoRest: locator,
+      enterMapCreatorRest: locator,
+      enterMapCreatorRestPair: locator,
+      enterSetCreatorRest: locator,
+      enterStatement: locator
+    }
+
+    parser.addParseListener(listener)
+    parser.compilationUnit()
   }
 
   private detectWithRegexp () {
