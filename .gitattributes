@@ -1,0 +1,3 @@
+*html linguist-documentation
+docs/* linguist-documentation
+test/classes/* linguist-vendored
