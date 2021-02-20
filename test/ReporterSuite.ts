@@ -2,6 +2,7 @@ import * as gulp from 'gulp'
 import * as fs from 'fs-extra'
 import * as assert from 'assert'
 import { JSforceReporter, jsforceGulpReporter } from '../index'
+import { VinylWriter } from '../lib/vinyl'
 
 const TMP_DIR = './.tmp'
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -16,12 +17,13 @@ async function reporter (...reports): Promise<void> {
   }).report()
 }
 
-async function gulper (...reports): Promise<void> {
+async function gulper (useApexParser: boolean, ...reports): Promise<void> {
   return await new Promise((resolve, reject) => {
     gulp
       .src('./test/deploy-result.json', { base: './test' })
       .pipe(
         jsforceGulpReporter({
+          useApexParser,
           reporters: [...reports],
           detectExecutableLines: true,
           packageRoot: './test'
@@ -95,20 +97,20 @@ describe('Deploy Reporter', () => {
     })
 
     it('should create cobertura report', async () => {
-      await gulper('cobertura')
+      await gulper(true, 'cobertura')
 
       assert.equal(fs.existsSync(TMP_DIR + '/cobertura-coverage.xml'), true)
     })
 
     it('should create only junit reports', async () => {
-      await gulper('junitonly')
+      await gulper(undefined, 'junitonly')
 
       assert.equal(fs.existsSync(TMP_DIR + '/TEST-components.xml'), true)
       assert.equal(fs.existsSync(TMP_DIR + '/TEST-results.xml'), true)
     })
 
     it('should create Jest Stare report', async () => {
-      await gulper('jeststare')
+      await gulper(false, 'jeststare')
 
       assert.equal(fs.existsSync(TMP_DIR + '/jest-stare/index.html'), true)
     })
@@ -134,6 +136,64 @@ describe('Deploy Reporter', () => {
       })
 
       assert.equal(vinylFile.isNull(), true)
+    })
+  })
+
+  describe('class VinylWriter', () => {
+    beforeAll(() => {
+      fs.mkdirSync(TMP_DIR)
+    })
+
+    afterAll(() => {
+      fs.removeSync(TMP_DIR)
+    })
+
+    it('should execute write for dir', () => {
+      // Our tests don't need a real Transform class, just something that can accept `push`.
+      const accum: any = []
+      const writer = new VinylWriter('./', accum)
+
+      const result = writer.writerForDir('./subdir')
+
+      assert.strictEqual(result instanceof VinylWriter, true)
+
+      assert.throws(() => {
+        writer.writerForDir('C:\\subdir')
+      })
+    })
+
+    it('should copy file', () => {
+      // Our tests don't need a real Transform class, just something that can accept `push`.
+      const accum: any = []
+      const filePath = TMP_DIR + '/garbage.file'
+      const writer = new VinylWriter('./', accum)
+
+      fs.writeFileSync(filePath, Buffer.alloc(0))
+      assert.strictEqual(accum.length, 0)
+
+      assert.doesNotThrow(() => {
+        writer.copyFile(filePath, TMP_DIR + '/garbage2.file', '')
+      })
+
+      assert.doesNotThrow(() => {
+        writer.copyFile(filePath, TMP_DIR + '/garbage3.file', 'Stuff__')
+      })
+
+      assert.throws(() => {
+        writer.copyFile(filePath, '/garbage4.file', '')
+      })
+
+      assert.strictEqual(accum.length, 2)
+    })
+
+    it('should throw on absolute path for write file', () => {
+      // Our tests don't need a real Transform class, just something that can accept `push`.
+      const accum: any = []
+      const writer = new VinylWriter('./', accum)
+
+      assert.throws(() => {
+        writer.writeFile('/absolute')
+      })
     })
   })
 })

@@ -1,9 +1,16 @@
-import { ElocLine } from './types'
+import { ApexLexer, ApexParser, CaseInsensitiveInputStream } from 'apex-parser'
+import { CommonTokenStream, ParserRuleContext } from 'antlr4ts'
+import type { ApexParserListener } from 'apex-parser/lib/ApexParserListener'
+import type { ElocData } from './types'
 
 /** Class for detecting Executable Lines of Code. */
 export class ElocDetector {
   /** Construct an instance of ElocDetector. */
-  constructor (sourceContents: string = '') {
+  constructor (sourceContents: string = '', useApexParser: boolean = true) {
+    this.sourceContents = sourceContents
+    this.lines = []
+    this.useApexParser = useApexParser
+
     this.rules = [
       // Class getter/setter annotation.
       /(get;)|(set;)/,
@@ -37,10 +44,9 @@ export class ElocDetector {
         end: /}/
       }
     }
-    this.sourceContents = sourceContents
-    this.lines = []
   }
 
+  useApexParser: boolean
   rules: RegExp[]
   skipLibrary: {
     debugLine: RegExp
@@ -67,9 +73,55 @@ export class ElocDetector {
   }
 
   sourceContents: string
-  lines: ElocLine[]
+  lines: ElocData[]
 
   detect (): this {
+    if (this.useApexParser) {
+      this.detectWithApexParser()
+    } else {
+      this.detectWithRegexp()
+    }
+
+    return this
+  }
+
+  private detectWithApexParser () {
+    const lexer = new ApexLexer(new CaseInsensitiveInputStream({}, this.sourceContents))
+    const tokens = new CommonTokenStream(lexer)
+    const parser = new ApexParser(tokens)
+    const elocMap = new Map<number, ElocData>()
+    const locator = (ctx: ParserRuleContext): void => {
+      const int = ctx.start.line
+      const len = Math.max(0, ctx.start.charPositionInLine) + ctx.start.text.length
+
+      if (!elocMap.has(int)) {
+        elocMap.set(int, { int, len })
+      }
+    }
+    const listener: ApexParserListener = {
+      enterConstructorDeclaration: locator,
+      enterMethodDeclaration: locator,
+      enterCreator: locator,
+      enterGetter: locator,
+      enterSetter: locator,
+      enterMethodCall: locator,
+      enterMethodCallExpression: locator,
+      enterDotMethodCall: locator,
+      enterNewExpression: locator,
+      enterClassCreatorRest: locator,
+      enterArrayCreatorRest: locator,
+      enterNoRest: locator,
+      enterMapCreatorRest: locator,
+      enterMapCreatorRestPair: locator,
+      enterSetCreatorRest: locator,
+      enterStatement: locator
+    }
+
+    parser.addParseListener(listener)
+    parser.compilationUnit()
+  }
+
+  private detectWithRegexp () {
     const lines = this.sourceContents.split('\n')
     let multiLineComment = false
     let soqlQuery = false
@@ -131,7 +183,5 @@ export class ElocDetector {
         }
       })
     })
-
-    return this
   }
 }
