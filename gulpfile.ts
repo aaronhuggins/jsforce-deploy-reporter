@@ -1,8 +1,11 @@
 import * as shell from 'gulp-shell'
-import * as jestCli from 'jest-cli'
 
 export async function test (): Promise<void> {
-  await jestCli.run()
+  await shell.task('mocha')()
+}
+
+export async function coverage (): Promise<void> {
+  await shell.task('nyc mocha')()
 }
 
 export async function format (): Promise<void> {

@@ -37,7 +37,7 @@ async function gulper (useApexParser: boolean, ...reports): Promise<void> {
 
 describe('Deploy Reporter', () => {
   describe('class JSforceReporter', () => {
-    afterAll(() => {
+    after(() => {
       fs.removeSync(TMP_DIR)
     })
 
@@ -92,7 +92,7 @@ describe('Deploy Reporter', () => {
   })
 
   describe('function jsforceGulpReporter', () => {
-    afterAll(() => {
+    after(() => {
       fs.removeSync(TMP_DIR)
     })
 
@@ -140,11 +140,11 @@ describe('Deploy Reporter', () => {
   })
 
   describe('class VinylWriter', () => {
-    beforeAll(() => {
+    before(() => {
       fs.mkdirSync(TMP_DIR)
     })
 
-    afterAll(() => {
+    after(() => {
       fs.removeSync(TMP_DIR)
     })
 
