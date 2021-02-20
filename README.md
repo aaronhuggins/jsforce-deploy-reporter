@@ -13,7 +13,11 @@ Code coverage or tests for anything other than Apex should be handled by another
 
 ## Installation and Usage
 
-Install the package using yarn or npm: `npm install --save-dev jsforce-deploy-reporter`.
+Install the package using yarn or [npm](https://www.npmjs.com/package/jsforce-deploy-reporter):
+
+```shell
+npm install --save-dev jsforce-deploy-reporter
+```
 
 There are multiple ways to get the deploy result, not the least of which would be to use `xml2js` to convert a raw response. This example uses package [`@nhs-llc/gulp-jsforce-deploy`](https://www.npmjs.com/package/@nhs-llc/gulp-jsforce-deploy).
 
