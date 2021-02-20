@@ -9,5 +9,5 @@
     "test",
     "gulpfile.ts"
   ],
-  "exclude": ["dist"]
+  "exclude": ["dist", "docs"]
 }

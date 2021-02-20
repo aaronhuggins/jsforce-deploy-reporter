@@ -22,7 +22,7 @@
       "mocha"
     ]
   },
-  "exclude": ["dist", "test", "gulpfile.ts", "jest.config.ts"],
+  "exclude": ["dist", "docs", "test", "gulpfile.ts", "jest.config.ts"],
   "ts-node": {
     "files": true
   }
