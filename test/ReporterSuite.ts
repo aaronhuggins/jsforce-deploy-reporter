@@ -44,23 +44,23 @@ describe('Deploy Reporter', () => {
     it('should create lcov reports', async () => {
       await reporter('lcov')
 
-      assert.equal(fs.existsSync(TMP_DIR + '/lcov.info'), true)
-      assert.equal(fs.existsSync(TMP_DIR + '/lcov-report/index.html'), true)
+      assert.strictEqual(fs.existsSync(TMP_DIR + '/lcov.info'), true)
+      assert.strictEqual(fs.existsSync(TMP_DIR + '/lcov-report/index.html'), true)
     })
 
     it('should create junit reports', async () => {
       await reporter('junit')
 
-      assert.equal(fs.existsSync(TMP_DIR + '/TEST-components.xml'), true)
-      assert.equal(fs.existsSync(TMP_DIR + '/MESSAGES-components.json'), true)
-      assert.equal(fs.existsSync(TMP_DIR + '/TEST-results.xml'), true)
-      assert.equal(fs.existsSync(TMP_DIR + '/MESSAGES-results.json'), true)
+      assert.strictEqual(fs.existsSync(TMP_DIR + '/TEST-components.xml'), true)
+      assert.strictEqual(fs.existsSync(TMP_DIR + '/MESSAGES-components.json'), true)
+      assert.strictEqual(fs.existsSync(TMP_DIR + '/TEST-results.xml'), true)
+      assert.strictEqual(fs.existsSync(TMP_DIR + '/MESSAGES-results.json'), true)
     })
 
     it('should create Jest Stare report', async () => {
       await reporter('jeststare')
 
-      assert.equal(fs.existsSync(TMP_DIR + '/jest-stare/index.html'), true)
+      assert.strictEqual(fs.existsSync(TMP_DIR + '/jest-stare/index.html'), true)
     })
 
     it('should output text report to console', async () => {
@@ -99,20 +99,20 @@ describe('Deploy Reporter', () => {
     it('should create cobertura report', async () => {
       await gulper(true, 'cobertura')
 
-      assert.equal(fs.existsSync(TMP_DIR + '/cobertura-coverage.xml'), true)
+      assert.strictEqual(fs.existsSync(TMP_DIR + '/cobertura-coverage.xml'), true)
     })
 
     it('should create only junit reports', async () => {
       await gulper(undefined, 'junitonly')
 
-      assert.equal(fs.existsSync(TMP_DIR + '/TEST-components.xml'), true)
-      assert.equal(fs.existsSync(TMP_DIR + '/TEST-results.xml'), true)
+      assert.strictEqual(fs.existsSync(TMP_DIR + '/TEST-components.xml'), true)
+      assert.strictEqual(fs.existsSync(TMP_DIR + '/TEST-results.xml'), true)
     })
 
     it('should create Jest Stare report', async () => {
       await gulper(false, 'jeststare')
 
-      assert.equal(fs.existsSync(TMP_DIR + '/jest-stare/index.html'), true)
+      assert.strictEqual(fs.existsSync(TMP_DIR + '/jest-stare/index.html'), true)
     })
 
     it('should passthrough on null file', async () => {
@@ -135,7 +135,7 @@ describe('Deploy Reporter', () => {
           .on('error', reject)
       })
 
-      assert.equal(vinylFile.isNull(), true)
+      assert.strictEqual(vinylFile.isNull(), true)
     })
   })
 
