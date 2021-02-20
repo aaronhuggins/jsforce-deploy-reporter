@@ -7,7 +7,12 @@ import type { DeployDetails } from './testsuites/types'
 import type { JSforceReporterOptions } from './types'
 import type { Transform } from 'stream'
 
+/** Class for consuming deployment details from Salesforce Metadata API and creating both coverage and test reports. */
 export class JSforceReporter {
+  /** Create an instance of the reporter class. */
+  constructor (details: DeployDetails, options?: JSforceReporterOptions)
+  /** Create an instance of the reporter class for use with Gulp pipelines */
+  constructor (details: DeployDetails, options: JSforceReporterOptions, transform: Transform)
   constructor (details: DeployDetails, options: JSforceReporterOptions = {}, transform: false | Transform = false) {
     this.options = options
     this.details = details
@@ -30,10 +35,14 @@ export class JSforceReporter {
     this.transform = transform
   }
 
+  /** The deployment details passed to this instance. */
   details: DeployDetails
+  /** Options for reporting. */
   options: JSforceReporterOptions
+  /** The transformer supplied to this instance, or false. */
   transform: false | Transform
 
+  /** Generate reports. */
   async report (): Promise<void> {
     const context = libReport.createContext({
       dir: this.options.outputRoot,

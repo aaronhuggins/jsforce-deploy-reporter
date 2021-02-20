@@ -5,6 +5,7 @@ import type { Transform } from 'stream'
 import type Vinyl from 'vinyl'
 import type { JSforceReporterOptions } from './types'
 
+/** Helper method for using the reporter in a gulp pipeline. */
 export function jsforceGulpReporter (options: JSforceReporterOptions): Transform {
   return through.obj(function (file: Vinyl, enc: BufferEncoding, callback: through.TransformCallback) {
     if (file.isNull()) {

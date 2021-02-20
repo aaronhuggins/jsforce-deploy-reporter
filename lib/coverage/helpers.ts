@@ -11,9 +11,11 @@ export async function getApexFileCoverage (coverage: any = {}, opts: JSforceRepo
   const pkgRoot = typeof opts.packageRoot === 'string' ? `${opts.packageRoot}/` : ''
   const sourceFile = `${pkgRoot}${getTypeFolder(coverage.type)}/${coverage.name as string}${getTypeExt(coverage.type)}`
   const locationsHit = parseFloat(coverage.numLocations) - parseFloat(coverage.numLocationsNotCovered)
-  if (typeof opts.detectExecutableLines === 'boolean' && opts.detectExecutableLines) {
+
+  if (typeof opts.detectExecutableLines === 'undefined' || opts.detectExecutableLines) {
     executableLines = detectExecutableLines(sourceFile, opts.useApexParser)
   }
+
   const lines = parseLines(locationsHit, coverage.locationsNotCovered, executableLines)
   const fileCoverage = new FileCoverage(sourceFile)
 
