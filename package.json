@@ -5,7 +5,10 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "format": "prettier-standard --format"
+    "prepack": "gulp compile",
+    "postpack": "gulp cleanup",
+    "format": "gulp format",
+    "test": "gulp coverage"
   },
   "author": {
     "name": "Net Health Shops LLC Tech Team",
@@ -49,7 +52,6 @@
     "gulp-zip": "^5.0.2",
     "mocha": "^8.3.0",
     "nyc": "^15.1.0",
-    "prettier-standard": "^16.3.0",
     "source-map-support": "^0.5.19",
     "ts-jest": "^26.5.1",
     "ts-node": "^9.1.1",
