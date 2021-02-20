@@ -17,6 +17,10 @@ export async function format (): Promise<void> {
   await shell.task('ts-standard --fix')()
 }
 
+export async function typedoc (): Promise<void> {
+  await shell.task('typedoc')()
+}
+
 export async function tsc (): Promise<void> {
   await shell.task('tsc')()
 }

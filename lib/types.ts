@@ -12,11 +12,11 @@ export interface JSforceReporterOptions {
   outputRoot?: string
   /** Use the `apex-parser` for speed and accuracy; set to true by default. Setting to `false` uses legacy RegExp parser. */
   useApexParser?: boolean
-  /** If 'true', the reporter will try to read-in Apex classes/triggers from disk and parse for executable lines of code; defaults to `true`. */
+  /** Read-in Apex classes/triggers from disk and parse for executable lines of code; defaults to `true`. */
   detectExecutableLines?: boolean
-  /** A single report format; see library `nyc` for supported formats; defaults to 'text'. */
+  /** A single report format, see library `nyc` for supported formats; defaults to 'text'. Will be coerced to `reporters` array. */
   reporter?: string
-  /** One or more report formats; see library `nyc` for supported formats; defaults to 'text'. */
+  /** One or more report formats, see library `nyc` for supported formats; defaults to 'text'. */
   reporters?: string[]
   /** Date-time the Salesforce deployment completed; will be overriden by the completed date in the deployment result. */
   completedDate?: string
