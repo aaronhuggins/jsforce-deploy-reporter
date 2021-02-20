@@ -1,5 +1,5 @@
 /** The options for JSforce Deploy Reporter.
- * 
+ *
  * For supported coverage reporters and how to use watermarks, please check out IstanbulJS documentation.
 
 - [Reporters](https://istanbul.js.org/docs/advanced/alternative-reporters/)

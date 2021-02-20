@@ -85,7 +85,7 @@ export class ElocDetector {
     return this
   }
 
-  private detectWithApexParser () {
+  private detectWithApexParser (): void {
     const lexer = new ApexLexer(new CaseInsensitiveInputStream({}, this.sourceContents))
     const tokens = new CommonTokenStream(lexer)
     const parser = new ApexParser(tokens)
@@ -121,7 +121,7 @@ export class ElocDetector {
     parser.compilationUnit()
   }
 
-  private detectWithRegexp () {
+  private detectWithRegexp (): void {
     const lines = this.sourceContents.split('\n')
     let multiLineComment = false
     let soqlQuery = false
