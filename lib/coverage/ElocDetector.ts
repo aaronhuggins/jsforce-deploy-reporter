@@ -117,6 +117,8 @@ export class ElocDetector {
       enterStatement: locator
     }
 
+    lexer.removeErrorListeners()
+    parser.removeErrorListeners()
     parser.addParseListener(listener)
     parser.compilationUnit()
 
