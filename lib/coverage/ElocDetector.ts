@@ -6,10 +6,11 @@ import type { ElocData } from './types'
 /** Class for detecting Executable Lines of Code. */
 export class ElocDetector {
   /** Construct an instance of ElocDetector. */
-  constructor (sourceContents: string = '', useApexParser: boolean = true) {
+  constructor (sourceContents: string = '', typeExt: string = '.cls', useApexParser: boolean = true) {
     this.sourceContents = sourceContents
     this.lines = []
     this.useApexParser = useApexParser
+    this.typeExt = typeExt
 
     this.rules = [
       // Class getter/setter annotation.
@@ -47,6 +48,7 @@ export class ElocDetector {
   }
 
   useApexParser: boolean
+  typeExt: string
   rules: RegExp[]
   skipLibrary: {
     debugLine: RegExp
@@ -120,7 +122,15 @@ export class ElocDetector {
     lexer.removeErrorListeners()
     parser.removeErrorListeners()
     parser.addParseListener(listener)
-    parser.compilationUnit()
+
+    switch(this.typeExt) {
+      case '.cls':
+        parser.compilationUnit()
+        break
+      case '.trigger':
+        parser.triggerUnit()
+        break
+    }
 
     this.lines = Array.from(elocMap.values())
   }

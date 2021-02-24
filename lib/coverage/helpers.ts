@@ -9,11 +9,12 @@ import type { JSforceReporterOptions } from '../types'
 export async function getApexFileCoverage (coverage: any = {}, opts: JSforceReporterOptions = {}): Promise<FileCoverage> {
   let executableLines = []
   const pkgRoot = typeof opts.packageRoot === 'string' ? `${opts.packageRoot}/` : ''
-  const sourceFile = `${pkgRoot}${getTypeFolder(coverage.type)}/${coverage.name as string}${getTypeExt(coverage.type)}`
+  const typeExt = getTypeExt(coverage.type)
+  const sourceFile = `${pkgRoot}${getTypeFolder(coverage.type)}/${coverage.name as string}${typeExt}`
   const locationsHit = parseFloat(coverage.numLocations) - parseFloat(coverage.numLocationsNotCovered)
 
   if (typeof opts.detectExecutableLines === 'undefined' || opts.detectExecutableLines) {
-    executableLines = detectExecutableLines(sourceFile, opts.useApexParser)
+    executableLines = detectExecutableLines(sourceFile, typeExt, opts.useApexParser)
   }
 
   const lines = parseLines(locationsHit, coverage.locationsNotCovered, executableLines)
@@ -85,10 +86,10 @@ export function parseLines (linesHit, linesMissed: any[] = [], executableLines =
 }
 
 /** Detect executable lines from a given source file path. */
-export function detectExecutableLines (sourceFile: string, useApexParser?: boolean): ElocData[] {
+export function detectExecutableLines (sourceFile: string, typeExt: string, useApexParser?: boolean): ElocData[] {
   if (fs.existsSync(sourceFile)) {
     const apexString = fs.readFileSync(sourceFile, 'utf8')
-    const detector = new ElocDetector(apexString, useApexParser).detect()
+    const detector = new ElocDetector(apexString, typeExt, useApexParser).detect()
 
     return detector.lines
   }
