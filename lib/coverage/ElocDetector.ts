@@ -119,6 +119,8 @@ export class ElocDetector {
 
     parser.addParseListener(listener)
     parser.compilationUnit()
+
+    this.lines = Array.from(elocMap.values())
   }
 
   private detectWithRegexp (): void {
